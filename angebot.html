@@ -140,10 +140,10 @@
           grid-template-columns: 1fr;
         }
         .sidebar-visual {
-           order: -1; /* Show image first on mobile? Or last? Let's keep default or move to bottom */
-           display: none; /* Hide illustrative image on mobile to save space? Or show. */
+           /* Image at bottom by default in grid flow */
            display: block;
            text-align: center;
+           margin-top: 2rem;
         }
         .sidebar-visual img {
            max-width: 100%;

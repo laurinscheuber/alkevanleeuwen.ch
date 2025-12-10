@@ -10,5 +10,9 @@
   },
   "devDependencies": {
     "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.13.1",
+    "@sanity/image-url": "^2.0.2"
   }
 }

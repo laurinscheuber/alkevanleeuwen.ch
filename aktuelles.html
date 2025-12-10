@@ -27,8 +27,58 @@
     <main class="section">
         <div class="container">
             <h1>Aktuelles</h1>
-            <p>Hier finden Sie bald Neuigkeiten aus unserer Praxis.</p>
-        </div>
+            <div id="aktuelles-list" class="projects-grid">
+                <!-- Projects will be loaded here from Sanity -->
+                <p class="loading-text">Lade aktuelle Projekte...</p>
+            </div>
+            
+            <style>
+              .projects-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 2rem;
+                margin-top: 2rem;
+              }
+              .project-card {
+                background: white;
+                border-radius: var(--radius-sm);
+                box-shadow: var(--shadow-sm);
+                overflow: hidden;
+                transition: transform 0.3s ease;
+              }
+              .project-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--shadow-md);
+              }
+              .project-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+              }
+              .project-content {
+                padding: 1.5rem;
+              }
+              .project-title {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.25rem;
+                color: var(--color-text);
+              }
+              .project-meta {
+                font-size: 0.9rem;
+                color: #666;
+                margin-bottom: 1rem;
+              }
+              .loading-text {
+                color: #666;
+                font-style: italic;
+              }
+              .error-message {
+                color: #dc2626;
+                padding: 1rem;
+                background: #fee2e2;
+                border-radius: var(--radius-sm);
+              }
+            </style>
     </main>
     <footer>
       <div class="container footer-content">
