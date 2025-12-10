@@ -1,11 +1,15 @@
 import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
+// Safe initialization
+const projectId = import.meta.env.VITE_SANITY_PROJECT_ID;
+const dataset = import.meta.env.VITE_SANITY_DATASET;
+
 export const client = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
-  dataset: import.meta.env.VITE_SANITY_DATASET,
-  useCdn: true, // set to `false` to bypass the edge cache
-  apiVersion: '2023-05-03', // use current date (YYYY-MM-DD) to target the latest API version
+  projectId: projectId || 'undefined', // Prevent crash if missing
+  dataset: dataset || 'production',
+  useCdn: true, 
+  apiVersion: '2023-05-03',
 })
 
 const builder = imageUrlBuilder(client)
