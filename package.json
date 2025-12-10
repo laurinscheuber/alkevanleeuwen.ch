@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cd studio && npm install && npm run build && cd .. && mkdir -p dist/studio && cp -r studio/dist/* dist/studio/ && node -e \"const fs = require('fs'); const p = 'dist/studio/index.html'; let h = fs.readFileSync(p, 'utf8'); h = h.replace(/\\\"\\/static\\//g, '\\\"/studio/static/'); fs.writeFileSync(p, h);\"",
+    "build": "vite build && cd studio && npm install && npm run build && cd .. && mkdir -p dist/studio && cp -r studio/dist/* dist/studio/ && node -e \"const fs = require('fs'); const p = 'dist/studio/index.html'; let h = fs.readFileSync(p, 'utf8'); h = h.replace(/\\\"\\/static\\//g, '\\\"/studio/static/'); h = h.replace(/\\\"\\/vendor\\//g, '\\\"/studio/vendor/'); fs.writeFileSync(p, h);\"",
     "preview": "vite preview"
   },
   "devDependencies": {
