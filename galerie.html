@@ -8,20 +8,9 @@
     <style>
         .gallery-masonry {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Slightly smaller min-width for flexibility */
+            grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns for desktop as requested */
             grid-auto-flow: dense;
-            gap: 1rem;
-        }
-
-        /* Ensure specific items have diverse sizes for "Mosaic" feel */
-        .gallery-item:nth-child(1) {
-            grid-column: span 2;
-            aspect-ratio: 3/2; /* Typical landscape photo ratio */
-        }
-        
-        .gallery-item:nth-child(4) {
-            grid-column: span 1;
-            grid-row: span 1;
+            gap: 1.5rem;
         }
 
         .gallery-item {
@@ -31,6 +20,25 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
+            display: flex;
+        }
+
+        /* 
+           Layout Logic:
+           Row 1: Item 1 (Span 2) | Item 2 (Span 1)
+           Row 2: Item 3 (Span 1) | Item 4 (Span 1) | Item 5 (Span 1)
+           Row 3: Item 6 (Span 2) | Item 7 (Span 1)
+        */
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            aspect-ratio: 3/2; 
+        }
+
+        /* Item 6 (Interior 2) spans 2 cols */
+        .gallery-item:nth-child(6) {
+            grid-column: span 2;
+            aspect-ratio: 3/2;
         }
 
         .gallery-item:hover {
@@ -44,11 +52,6 @@
             height: 100%;
             object-fit: cover;
             display: block;
-        }
-
-        /* Ensure images fill their grid cells completely */
-        .gallery-item {
-            display: flex; 
         }
 
         /* Lightbox Overlay */
@@ -112,11 +115,15 @@
 
         @media (max-width: 768px) {
             .gallery-masonry { 
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Single column on mobile */
             }
-            .gallery-item:first-child {
+            .gallery-item:nth-child(1),
+            .gallery-item:nth-child(6) {
                 grid-column: auto;
-                grid-row: auto;
+                aspect-ratio: auto; /* Reset aspect ratio requirement on mobile or keep if preferred */
+            }
+            .gallery-item img {
+                height: 300px; /* Consistent height on mobile */
             }
         }
     </style>
@@ -146,15 +153,26 @@
         <div class="container">
             <h1 style="margin-bottom: 2rem;">Galerie</h1>
             <div class="gallery-masonry" id="gallery-container">
-                <!-- Wrapped within divs for cleaner masonry handling -->
+                <!-- 1. Foto 1 (Span 2) -->
                 <div class="gallery-item"><img src="/images/foto1.jpg" alt="Praxisraum Liege"></div>
-                <div class="gallery-item"><img src="/images/foto5.jpg" alt="Praxis Aussenansicht"></div>
+                
+                <!-- 2. Offene Tür 1 (Span 1) -->
                 <div class="gallery-item"><img src="/images/foto6.jpg" alt="Praxis Eingang offen"></div>
-                <div class="gallery-item"><img src="/images/foto7.jpg" alt="Praxis Innenbereich"></div>
+                
+                <!-- 3. Innenraum mit Trampolin (Span 1) -->
                 <div class="gallery-item"><img src="/images/foto8.jpg" alt="Trainingsbereich"></div>
-                <!-- Foto 9 vertical? -->
-                <div class="gallery-item"><img src="/images/foto9.jpg" alt="Therapie Figur"></div>
+                
+                <!-- 4. Offene Tür 2 (Span 1) -->
+                <div class="gallery-item"><img src="/images/foto5.jpg" alt="Praxis Aussenansicht"></div>
+                
+                <!-- 5. Eingangsbereich (Span 1) -->
                 <div class="gallery-item"><img src="/images/foto10.jpg" alt="Eingangsbereich Innen"></div>
+                
+                <!-- 6. Innenraum Praxis 2 (Span 2) -->
+                <div class="gallery-item"><img src="/images/foto7.jpg" alt="Praxis Innenbereich"></div>
+                
+                <!-- 7. Figur (Span 1 - End) -->
+                <div class="gallery-item"><img src="/images/foto9.jpg" alt="Therapie Figur"></div>
             </div>
         </div>
 
