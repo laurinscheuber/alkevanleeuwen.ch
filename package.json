@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cd studio && npm install && npm run build && cd .. && mkdir -p dist/studio && cp -r studio/dist/* dist/studio/",
     "preview": "vite preview"
   },
   "devDependencies": {
