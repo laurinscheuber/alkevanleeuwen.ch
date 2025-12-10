@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unser Angebot - Physiotherapie Alke van Leeuwen</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav-container">
+        <a href="/" class="logo">
+          <img src="/images/logo.jpg" alt="Logo Alke van Leeuwen">
+          <span>Alke van Leeuwen</span>
+        </a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/expertise.html">Expertise</a></li>
+            <!-- <li><a href="/aktuelles.html">Aktuelles</a></li> -->
+            <li><a href="/angebot.html" class="active">Angebot</a></li>
+            <li><a href="/galerie.html">Galerie</a></li>
+            <li><a href="/kontakt.html">Kontakt</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <h1 class="text-center" style="margin-bottom: 3rem;">Unser Angebot</h1>
+          
+          <div class="offer-layout">
+            <!-- Therapy Methods -->
+            <div class="offer-column">
+               <h2>Therapiemethoden</h2>
+               <ul class="offer-list">
+                 <li>FBL functional kinetics</li>
+                 <li>Manualtherapie</li>
+                 <li>Kinesiotaping</li>
+                 <li>Myofaszial Release</li>
+                 <li>Neuralmobilisation</li>
+                 <li>Bobathmethode</li>
+                 <li>Systematic Release</li>
+                 <li>Matrix Rhythmus Gerät</li>
+               </ul>
+               
+               <!-- Placeholder for small graphic 'Strichmännchen' if I had one, or a small icon -->
+               <div class="offer-icon">
+                 <!-- Using javascript.svg ref or similar as placeholder? No, stick to clean text or use a generic icon if I had one in assets. 
+                      User said "ev. Platz für Foto". I will use foto9.jpg (Figur?) or similar as a small visual on the side? 
+                      "Einzelfotos 3 und 4... Figur, Foto 9". Let's try to incorporate specific images later. 
+                      For now just the list.
+                 -->
+               </div>
+            </div>
+
+            <!-- Treatments -->
+            <div class="offer-column">
+               <h2>Behandlungsangebote</h2>
+               <ul class="offer-list">
+                 <li>Funktionsstörungen aller Gelenke, posttraumatisch oder nach Operationen</li>
+                 <li>Rheumatische Beschwerden und Arthrose/Arthritis aller Gelenke</li>
+                 <li>Fehlhaltungen, Muskelschwächen</li>
+                 <li>Orthopädische Probleme z.B. Fuss, Knie</li>
+                 <li>Rücken- , Nackenbeschwerden, Diskushernien</li>
+                 <li>Schulter- Arm- Syndrome wie z.B. Frozen Shoulder, Tennisellbogen</li>
+                 <li>Therapie der Hand und des Handgelenks</li>
+                 <li>Neuroreha z.B. nach Schlaganfall und/ oder Erhaltungstherapie</li>
+                 <li>Kiefergelenk</li>
+                 <li>Präventive Physiotherapie und Sturzprophylaxe</li>
+                 <li>Narbenbehandlung</li>
+                 <li>Klassische medizinische Massage</li>
+                 <li>Physikalische Therapie: Matrix Rhythmus Gerät, Wärme- , Kältetherapie</li>
+               </ul>
+            </div>
+            
+            <div class="sidebar-visual">
+               <!-- Maybe Foto 9 (Figur) or Foto 8 (Training) -->
+               <img src="/images/foto9.jpg" alt="Therapie Figur" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); max-height: 400px; object-fit: cover;">
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-content">
+        <div class="footer-block">
+          <h4>Kontakt</h4>
+          <p>Praxis für Physiotherapie<br>Alke van Leeuwen</p>
+          <p>Haldenstrasse 6<br>CH-5454 Bellikon</p>
+          <p>Telefon: 056 - 470 18 75</p>
+          <p>Email: <a href="mailto:info@physiotherapie-alkevanleeuwen.ch">info@physiotherapie-alkevanleeuwen.ch</a></p>
+        </div>
+        <div class="footer-block">
+          <a href="/impressum.html">Impressum</a>
+        </div>
+      </div>
+    </footer>
+
+    <style>
+      .offer-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr 300px;
+        gap: var(--spacing-lg);
+      }
+      
+      .offer-column h2 {
+        color: var(--color-primary-dark);
+        border-bottom: 2px solid var(--color-primary-light);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+      }
+      
+      .offer-list {
+        list-style: none;
+      }
+      
+      .offer-list li {
+        margin-bottom: 0.8rem;
+        position: relative;
+        padding-left: 1.5rem;
+      }
+      
+      .offer-list li::before {
+        content: '•';
+        color: var(--color-primary);
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+      }
+
+      @media (max-width: 900px) {
+        .offer-layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar-visual {
+           order: -1; /* Show image first on mobile? Or last? Let's keep default or move to bottom */
+           display: none; /* Hide illustrative image on mobile to save space? Or show. */
+           display: block;
+           text-align: center;
+        }
+        .sidebar-visual img {
+           max-width: 100%;
+           height: auto;
+        }
+      }
+    </style>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
