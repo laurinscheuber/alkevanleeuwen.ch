@@ -10,22 +10,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 title,
                 description,
                 availability,
+                date,
                 mainImage
-            }`);
+            } | order(date asc)`);
 
             if (projects.length === 0) {
                 projectList.innerHTML = '<p>Momentan keine aktuellen Projekte.</p>';
             } else {
-                projectList.innerHTML = projects.map(project => `
+                projectList.innerHTML = projects.map(project => {
+                    const dateStr = project.date ? new Date(project.date).toLocaleDateString('de-CH', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    }) : '';
+                    
+                    return `
                     <div class="project-card">
                         ${project.mainImage ? `<img src="${urlFor(project.mainImage).width(400).url()}" alt="${project.title}" class="project-image">` : ''}
                         <div class="project-content">
                             <h3 class="project-title">${project.title}</h3>
-                            <p class="project-meta"><strong>Verfügbarkeit:</strong> ${project.availability || 'Auf Anfrage'}</p>
+                            <p class="project-meta">
+                                ${project.availability ? `<strong>Verfügbarkeit:</strong> ${project.availability}<br>` : ''}
+                                ${dateStr ? `<strong>Termin:</strong> ${dateStr} Uhr` : ''}
+                            </p>
                             <p>${project.description || ''}</p>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
             }
         } catch (error) {
             console.error('Error fetching projects:', error);
