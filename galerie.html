@@ -8,9 +8,20 @@
     <style>
         .gallery-masonry {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Slightly smaller min-width for flexibility */
             grid-auto-flow: dense;
-            gap: 1.5rem;
+            gap: 1rem;
+        }
+
+        /* Ensure specific items have diverse sizes for "Mosaic" feel */
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            aspect-ratio: 3/2; /* Typical landscape photo ratio */
+        }
+        
+        .gallery-item:nth-child(4) {
+            grid-column: span 1;
+            grid-row: span 1;
         }
 
         .gallery-item {
@@ -20,15 +31,6 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            display: flex; /* Ensure img fills */
-        }
-
-
-
-        /* Feature the first image */
-        .gallery-item:first-child {
-            grid-column: span 2;
-            grid-row: span 2;
         }
 
         .gallery-item:hover {
