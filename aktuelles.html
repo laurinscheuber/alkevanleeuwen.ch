@@ -10,7 +10,10 @@
 <body>
     <header>
       <div class="container nav-container">
-        <a href="/" class="logo"><span>Alke van Leeuwen</span></a>
+        <a href="/" class="logo">
+          <img src="/images/logo.jpg" alt="Logo Alke van Leeuwen">
+          <span>Alke van Leeuwen</span>
+        </a>
         <nav>
           <ul class="nav-links">
             <li><a href="/">Home</a></li>
@@ -26,59 +29,11 @@
     </header>
     <main class="section">
         <div class="container">
-            <h1>Aktuelles</h1>
-            <div id="aktuelles-list" class="projects-grid">
-                <!-- Projects will be loaded here from Sanity -->
-                <p class="loading-text">Lade aktuelle Projekte...</p>
+            <h1 class="text-center" style="margin-bottom: 2rem;">Aktuelles</h1>
+            <div id="news-grid" class="news-grid">
+                <p class="text-center" style="color: var(--color-text-light);">Lade Inhalte...</p>
             </div>
-            
-            <style>
-              .projects-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 2rem;
-                margin-top: 2rem;
-              }
-              .project-card {
-                background: white;
-                border-radius: var(--radius-sm);
-                box-shadow: var(--shadow-sm);
-                overflow: hidden;
-                transition: transform 0.3s ease;
-              }
-              .project-card:hover {
-                transform: translateY(-5px);
-                box-shadow: var(--shadow-md);
-              }
-              .project-image {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-              }
-              .project-content {
-                padding: 1.5rem;
-              }
-              .project-title {
-                margin: 0 0 0.5rem 0;
-                font-size: 1.25rem;
-                color: var(--color-text);
-              }
-              .project-meta {
-                font-size: 0.9rem;
-                color: #666;
-                margin-bottom: 1rem;
-              }
-              .loading-text {
-                color: #666;
-                font-style: italic;
-              }
-              .error-message {
-                color: #dc2626;
-                padding: 1rem;
-                background: #fee2e2;
-                border-radius: var(--radius-sm);
-              }
-            </style>
+        </div>
     </main>
     <footer>
       <div class="container footer-content">
@@ -86,10 +41,13 @@
           <h4>Kontakt</h4>
           <p>Praxis für Physiotherapie<br>Alke van Leeuwen</p>
           <p>Haldenstrasse 6<br>CH-5454 Bellikon</p>
+          <p>Telefon: 056 - 470 18 75</p>
+          <p>Email: <a href="mailto:info@physiotherapie-alkevanleeuwen.ch">info@physiotherapie-alkevanleeuwen.ch</a></p>
         </div>
         <div class="footer-block"><a href="/impressum.html">Impressum</a></div>
       </div>
     </footer>
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/aktuelles.js"></script>
 </body>
 </html>
