@@ -44,15 +44,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Global: Check if "Aktuelles" should be visible in menu
-    const aktuellesLink = document.querySelector('a[href="/aktuelles.html"]');
-    if (aktuellesLink) {
+    const aktuellesLinks = document.querySelectorAll('a[href="/aktuelles.html"]');
+    if (aktuellesLinks.length > 0) {
         try {
-            // Check count only if we haven't already fetched projects (optimization)
-            // But since this global check runs independently, we just do a lightweight count query
             const count = await client.fetch('count(*[_type == "project"])');
             if (count === 0) {
-                // Hide the list item (<li>) containing the link
-                aktuellesLink.parentElement.style.display = 'none';
+                aktuellesLinks.forEach(link => {
+                    if (link.parentElement) {
+                        link.parentElement.style.display = 'none';
+                    }
+                });
             }
         } catch (error) {
             console.warn('Could not update menu visibility:', error);
