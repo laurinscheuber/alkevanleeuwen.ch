@@ -3,14 +3,16 @@
 
 :root {
   /* Brand Colors */
-  /* Pale Orange as requested: "heller, blasser" */
-  --color-primary: #FFCC99; 
-  --color-primary-light: #FFE5CC;
-  --color-primary-dark: #E6B280;
+  /* Brand Colors matches Favicon/Logo */
+  --color-primary: #EB690B;       /* Vibrant orange from logo figure */
+  --color-primary-light: #FFF4EB; /* Soft background tint */
+  --color-primary-dark: #EB690B;  /* Matching vibrant logo orange exactly for text */
+  --color-primary-deep: #EB690B;  /* Simplified to single brand orange */
+  --color-on-primary: #FFFFFF;
   
-  --color-secondary: #EBEBEB; /* Light Grey for backgrounds */
-  --color-text: #4A4A4A;      /* Warm dark grey for text */
-  --color-text-light: #7A7A7A;
+  --color-secondary: #EBEBEB; 
+  --color-text: #4A4644;          /* Warm grey-brown from "FBL" logo text */
+  --color-text-light: #7A7572;
   
   --color-accent: #FFFFFF;
   --color-bg-body: #FAFAFA;
@@ -90,13 +92,29 @@ h1, h2, h3, h4 {
 .text-center { text-align: center; }
 .text-primary { color: var(--color-primary-dark); }
 
+/* Static Orange Underline */
+.title-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  color: var(--color-primary); /* Ensure title itself is orange */
+}
+
+.title-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-primary);
+}
+
 .btn {
   display: inline-block;
   padding: 0.8rem 1.5rem;
   background-color: var(--color-primary);
-  color: #fff; /* or dark depending on contrast */
-  color: #5d4037; /* Brownish to match orange? Let's go with dark grey for contrast */
-  color: var(--color-text);
+  color: var(--color-on-primary);
   font-weight: 500;
   border-radius: var(--radius-sm);
   transition: all 0.3s ease;
@@ -138,6 +156,7 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: var(--color-primary);
 }
 
 .logo img {
@@ -208,8 +227,8 @@ header {
 
 /* Footer (Global) */
 footer {
-  background-color: var(--color-primary-light); /* Lachsfarbe (hell) */
-  color: var(--color-text);
+  background-color: var(--color-primary); /* Vibrant Branding Orange */
+  color: #FFFFFF;
   padding: var(--spacing-lg) 0;
   margin-top: var(--spacing-xl);
   border-top: none;
@@ -222,16 +241,18 @@ footer {
   gap: var(--spacing-md);
 }
 
-.footer-block h4 {
-  font-family: var(--font-heading);
-  font-weight: 500;
-  margin-bottom: var(--spacing-sm);
+footer h2, footer h4 {
+  color: #FFFFFF;
 }
 
 .footer-block a {
-  transition: color 0.3s ease;
+  color: #FFFFFF;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: opacity 0.3s ease;
 }
 
 .footer-block a:hover {
-  color: var(--color-primary-dark);
+  opacity: 0.8;
+  color: #FFFFFF;
 }
