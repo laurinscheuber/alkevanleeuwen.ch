@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expertise - Physiotherapie Alke van Leeuwen</title>
     <link rel="stylesheet" href="/src/style.css" />
-      <link rel="icon" type="image/png" href="/favicon.png">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <!-- Fonts: Preconnect and Link instead of @import for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   </head>
   <body>
     <header>
@@ -20,7 +23,7 @@
           <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/expertise.html" class="active">Expertise</a></li>
-            <li><a href="/aktuelles.html">Aktuelles</a></li>
+            <li style="display: none;"><a href="/aktuelles.html">Aktuelles</a></li>
             <li><a href="/angebot.html">Angebot</a></li>
             <li><a href="/galerie.html">Galerie</a></li>
             <li><a href="/kontakt.html">Kontakt</a></li>
@@ -37,9 +40,8 @@
           
           <!-- Team Intro -->
           <div class="split-layout" style="margin-bottom: 4rem;">
-            <div class="visuals">
               <!-- Using foto2 (Team photo with spine) per "Text 2: Foto 2 von uns beiden..." -->
-              <img src="/images/foto2.jpg" alt="Alke van Leeuwen und Lena Gündel mit Wirbelsäulenmodell" class="team-photo" loading="lazy" width="600" height="400" fetchpriority="high">
+              <img src="/images/foto2.jpg" alt="Alke van Leeuwen und Lena Gündel mit Wirbelsäulenmodell" class="team-photo" loading="eager" fetchpriority="high" width="600" height="400">
             </div>
             <div class="content">
               <p>
