@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alkevanleeuwen.ch/sitemap.xml
