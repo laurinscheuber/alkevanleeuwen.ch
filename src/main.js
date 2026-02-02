@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (aktuellesLinks.length > 0) {
         try {
             const count = await client.fetch('count(*[_type == "project"])');
-            if (count === 0) {
+            if (count > 0) {
                 aktuellesLinks.forEach(link => {
                     if (link.parentElement) {
-                        link.parentElement.style.display = 'none';
+                        link.parentElement.style.display = 'block';
                     }
                 });
             }
