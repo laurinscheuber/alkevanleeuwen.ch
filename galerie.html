@@ -8,9 +8,9 @@
     <style>
         .gallery-masonry {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns for desktop as requested */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 3 columns on desktop (medium size) */
             grid-auto-flow: dense;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .gallery-item {
@@ -21,25 +21,10 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             display: flex;
+            aspect-ratio: 4/3; /* Uniform Aspect Ratio */
         }
 
-        /* 
-           Layout Logic:
-           Row 1: Item 1 (Span 2) | Item 2 (Span 1)
-           Row 2: Item 3 (Span 1) | Item 4 (Span 1) | Item 5 (Span 1)
-           Row 3: Item 6 (Span 2) | Item 7 (Span 1)
-        */
 
-        .gallery-item:nth-child(1) {
-            grid-column: span 2;
-            aspect-ratio: 3/2; 
-        }
-
-        /* Item 6 (Interior 2) spans 2 cols */
-        .gallery-item:nth-child(6) {
-            grid-column: span 2;
-            aspect-ratio: 3/2;
-        }
 
         .gallery-item:hover {
             transform: scale(1.01);
@@ -139,7 +124,7 @@
       <div class="container nav-container">
         <a href="/" class="logo">
           <img src="/images/logo.jpg" alt="Logo Alke van Leeuwen" loading="lazy" width="50" height="50">
-          <span>Alke van Leeuwen</span>
+          <span>Physiotherapie Alke van Leeuwen</span>
         </a>
         <nav>
           <ul class="nav-links">
@@ -154,29 +139,23 @@
         <button class="mobile-menu-btn">☰</button>
       </div>
     </header>
-    <main class="section">
+    <main class="section" style="padding-top: 2rem;">
         <div class="container">
-            <h1 style="margin-bottom: 2rem;">Galerie</h1>
+            <h1 class="text-center" style="margin-bottom: 2rem;">Galerie</h1>
             <div class="gallery-masonry" id="gallery-container">
                 <!-- 1. Foto 1 (Span 2) -->
                 <div class="gallery-item"><img src="/images/foto1.jpg" alt="Praxisraum Liege" loading="eager" fetchpriority="high" width="800" height="533"></div>
                 
-                <!-- 2. Offene Tür 1 (Span 1) -->
-                <div class="gallery-item"><img src="/images/foto6.jpg" alt="Praxis Eingang offen" loading="lazy" width="400" height="600"></div>
-                
-                <!-- 3. Innenraum mit Trampolin (Span 1) -->
-                <div class="gallery-item"><img src="/images/foto8.jpg" alt="Trainingsbereich" loading="lazy" width="400" height="600"></div>
-                
-                <!-- 4. Offene Tür 2 (Span 1) -->
-                <div class="gallery-item"><img src="/images/foto5.jpg" alt="Praxis Aussenansicht" loading="lazy" width="400" height="600"></div>
-                
-                <!-- 5. Eingangsbereich (Span 1) -->
-                <div class="gallery-item"><img src="/images/foto10.jpg" alt="Eingangsbereich Innen" loading="lazy" width="400" height="600"></div>
-                
-                <!-- 6. Innenraum Praxis 2 (Span 2) -->
+                <!-- 2. Innenraum Praxis 2b (Moved from pos 6 to 2) -->
                 <div class="gallery-item"><img src="/images/foto7.jpg" alt="Praxis Innenbereich" loading="lazy" width="800" height="533"></div>
                 
-                <!-- 7. Figur (Span 1 - End) -->
+                <!-- 3. Offene Tür 1 -->
+                <div class="gallery-item"><img src="/images/foto6.jpg" alt="Praxis Eingang offen" loading="lazy" width="400" height="600"></div>
+                
+                <!-- 4. Innenraum mit Trampolin -->
+                <div class="gallery-item"><img src="/images/foto8.jpg" alt="Trainingsbereich" loading="lazy" width="400" height="600"></div>
+                
+                <!-- 5. Figur (End) -->
                 <div class="gallery-item"><img src="/images/foto9.jpg" alt="Therapie Figur" loading="lazy" width="400" height="600"></div>
             </div>
         </div>
@@ -193,7 +172,7 @@
       <div class="container footer-content">
         <div class="footer-block">
           <h2>Kontakt</h2>
-          <p>Praxis für Physiotherapie<br>Alke van Leeuwen</p>
+          <p>Physiotherapie<br>Alke van Leeuwen</p>
           <p>Haldenstrasse 6<br>CH-5454 Bellikon</p>
         </div>
         <div class="footer-block"><a href="/impressum.html">Impressum</a></div>
