@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import mapImage from '../assets/images/map.png';
+---
+
+<Layout title="Kontakt - Physiotherapie Alke van Leeuwen">
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+        <h1 class="text-center">Kontakt & Anfahrt</h1>
+        <div class="split-layout" style="margin-top: 2rem;">
+            <div class="map-visual">
+                <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} />
+                <p style="text-align: center; font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Lageplan Bellikon</p>
+            </div>
+            <div class="contact-info">
+                <h3>Adresse</h3>
+                <p>
+                  <strong>Physiotherapie Alke van Leeuwen</strong><br>
+                  Haldenstrasse 6<br>
+                  5454 Bellikon
+                </p>
+                <br>
+                <h3>Kommunikation</h3>
+                <p>Telefon: 056 470 18 75</p>
+                <p>Email: <a href="mailto:info@physio-alkevanleeuwen.ch">info@physio-alkevanleeuwen.ch</a></p>
+                <p>HIN-Email: <a href="mailto:physio.alkevanleeuwen@physio-hin.ch">physio.alkevanleeuwen@physio-hin.ch</a></p>
+                <br>
+                <h3>Anfahrt & Parken</h3>
+                <p style="margin-bottom: 1rem;">
+                  <strong>Besucherparkplätze:</strong><br>
+                  Befinden sich oberhalb der Praxis hinter den Mehrfamilienhäusern. 
+                  Der Strasse im Bogen nach oben folgen, Parkplätze auf der rechten Seite.
+                </p>
+                <p style="margin-bottom: 1rem;">
+                  <strong>Weg zur Praxis:</strong><br>
+                  Hinunter zur Praxis vor den Parkplätzen die Passerelle nach rechts und Treppe nach unten nehmen.
+                </p>
+                <p>
+                  <strong>Alternativ (Barrierefrei):</strong><br>
+                  Lift im Haus Nr. 18 ins UG = Strassenniveau der Praxis, Nr 6
+                </p>
+            </div>
+        </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+    .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    @media (max-width: 768px) { .split-layout { grid-template-columns: 1fr; gap: 2rem; } }
+</style>

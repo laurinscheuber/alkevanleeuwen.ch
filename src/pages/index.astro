@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import foto1 from '../assets/images/foto1.jpg';
+import logoAlke from '../assets/images/Logo-alke.png';
+---
+  <!-- Hero / Introduction -->
+  <section class="section hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1 class="hero-title">Physiotherapie <br> <span class="text-primary">Alke van Leeuwen</span></h1>
+          
+          <blockquote class="hero-quote">
+            „Leben ist Bewegung“ <br>
+            <cite>— Dr. hc. Susanne Klein-Vogelbach</cite>
+          </blockquote>
+
+          <p class="hero-text">
+            Physiotherapie behebt oder reduziert Funktionsstörungen am Bewegungsapparat und lindert Schmerzen. 
+            Sie bietet ein breites Spektrum an Methoden zur Wiederherstellung oder Verbesserung Ihrer Gesundheit 
+            nach Erkrankungen, Unfällen oder Operationen am Bewegungssystem.
+          </p>
+
+          <a href="/angebot" class="btn">Unser Angebot</a>
+        </div>
+
+        <div class="hero-visuals">
+          <!-- Room Photo (Foto 1) -->
+          <div class="image-wrapper room-image">
+            <Image src={foto1} alt="Praxisraum Physiotherapie" loading="eager" width={600} />
+          </div>
+          
+          <!-- FBL Logo association -->
+          <div class="fbl-logo-wrapper">
+             <Image src={logoAlke} alt="Logo Alke van Leeuwen" width={180} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .hero-quote {
+    font-family: var(--font-quote);
+    font-size: 1.5rem;
+    font-style: italic;
+    border-left: 4px solid var(--color-primary);
+    padding-left: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-light);
+  }
+
+  .hero-text {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+    max-width: 50ch;
+  }
+
+  .hero-visuals {
+    position: relative;
+  }
+
+  .room-image img {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-float);
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .fbl-logo-wrapper {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    width: 180px;
+    background: rgba(255,255,255,0.9);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(5px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    .fbl-logo-wrapper {
+      display: none;
+    }
+  }
+</style>

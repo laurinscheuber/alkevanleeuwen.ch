@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client, urlFor } from '../lib/sanity';
+
+const projects = await client.fetch(`*[_type == "project"]{
+    title,
+    description,
+    availability,
+    date,
+    mainImage
+} | order(date asc)`);
+---
+
+<Layout title="Aktuelles - Physiotherapie Alke van Leeuwen">
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <h1 class="text-center" style="margin-bottom: 2rem;">Aktuelles</h1>
+      
+      {projects.length === 0 ? (
+        <p class="text-center" style="color: var(--color-text-light);">Momentan keine aktuellen Projekte.</p>
+      ) : (
+        <div class="news-grid">
+          {projects.map((project) => {
+             const dateStr = project.date ? new Date(project.date).toLocaleDateString('de-CH', { 
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+             }) : '';
+             
+             return (
+              <div class="project-card">
+                  {project.mainImage && (
+                    <img src={urlFor(project.mainImage).width(400).url()} alt={project.title} class="project-image" loading="lazy" />
+                  )}
+                  <div class="project-content">
+                      <h3 class="project-title">{project.title}</h3>
+                      <p class="project-meta">
+                          {project.availability && (<span><strong>Verfügbarkeit:</strong> {project.availability}<br></span>)}
+                          {dateStr && (<span><strong>Termin:</strong> {dateStr} Uhr</span>)}
+                      </p>
+                      <p>{project.description || ''}</p>
+                  </div>
+              </div>
+             );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .project-card {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .project-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .project-content {
+    padding: 1.5rem;
+  }
+  
+  .project-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary-dark);
+  }
+  
+  .project-meta {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+</style>

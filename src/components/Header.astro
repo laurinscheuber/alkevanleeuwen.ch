@@ -1,0 +1,53 @@
+---
+import { client } from '../lib/sanity';
+import { Image } from 'astro:assets';
+import logoImage from '../assets/images/logo.jpg';
+
+const pathname = new URL(Astro.request.url).pathname;
+
+let showAktuelles = false;
+try {
+  const count = await client.fetch('count(*[_type == "project"])');
+  showAktuelles = count > 0;
+} catch (e) {
+  console.warn("Could not fetch project count", e);
+}
+---
+
+<header>
+  <div class="container nav-container">
+    <a href="/" class="logo">
+      <Image src={logoImage} alt="Logo Alke van Leeuwen" width={50} height={50} loading="eager" />
+      <span>Physiotherapie Alke van Leeuwen</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/" class={pathname === '/' ? 'active' : ''}>Home</a></li>
+        <li><a href="/expertise" class={pathname.startsWith('/expertise') ? 'active' : ''}>Expertise</a></li>
+        {showAktuelles && (
+          <li><a href="/aktuelles" class={pathname.startsWith('/aktuelles') ? 'active' : ''}>Aktuelles</a></li>
+        )}
+        <li><a href="/angebot" class={pathname.startsWith('/angebot') ? 'active' : ''}>Angebot</a></li>
+        <li><a href="/galerie" class={pathname.startsWith('/galerie') ? 'active' : ''}>Galerie</a></li>
+        <li><a href="/kontakt" class={pathname.startsWith('/kontakt') ? 'active' : ''}>Kontakt</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu" id="mobile-menu-btn">☰</button>
+  </div>
+</header>
+
+<script>
+  // Mobile Menu Logic - Runs on every page navigation (View Transitions compatible)
+  document.addEventListener('astro:page-load', () => {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (menuBtn && navLinks) {
+      menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        const isExpanded = navLinks.classList.contains('active');
+        menuBtn.setAttribute('aria-expanded', String(isExpanded));
+      });
+    }
+  });
+</script>

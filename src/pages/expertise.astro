@@ -1,0 +1,234 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import foto2 from '../assets/images/foto2.jpg';
+import foto3 from '../assets/images/foto3.jpg';
+import foto4 from '../assets/images/foto4.jpg';
+---
+
+<Layout title="Expertise & Team - Physiotherapie Alke van Leeuwen">
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <h1 class="text-center" style="margin-bottom: 3rem;">Expertise & Team</h1>
+      
+      <!-- Team Intro -->
+      <div style="margin-bottom: 4rem; text-align: center;">
+          <Image src={foto2} alt="Alke van Leeuwen und Lena Gündel mit Wirbelsäulenmodell" class="team-photo" style="display: inline-block; margin: 0 auto;" loading="eager" width={600} />
+        </div>
+        <div class="content" style="max-width: 900px; margin: 0 auto; text-align: justify;">
+          <p>
+            Wir sind zwei gut ausgebildete und SRK anerkannte Physiotherapeutinnen mit langjähriger Berufserfahrung. 
+            Stetig haben wir uns durch Kurse in bewährten und neuen Methoden der Physiotherapie weitergebildet.
+          </p>
+          <br>
+          <p>
+            Im Gespräch mit Ihnen und mit Hilfe der körperlichen, physiotherapeutischen Untersuchung erfahren wir von Ihren Beschwerden 
+            und ermitteln deren mögliche Ursachen. Ihre Therapieziele und Behandlungsmassnahmen entwickeln wir individuell mit Ihnen gemeinsam.
+          </p>
+          <br>
+          <p>
+            Wichtig ist uns das zielorientierte Arbeiten an den Ursachen der Funktionsdefizite. 
+            Mit Arbeitsmethoden z.B. aus der FBL Functional Kinetics erkennen wir Abweichungen von normaler Haltung und Bewegung.
+          </p>
+          <br>
+          <p>
+            In der Behandlung kombinieren wir Gelenks- und Weichteiltechniken mit aktiven therapeutischen Übungen. 
+            Damit verbessern wir Mobilität, Stabilität, Koordination, Gleichgewicht und Kraft.
+          </p>
+          <br>
+          <p>
+            Feinkorrekturen bei therapeutischen Übungen, im Eigentraining und bei Entlastungen können Sie selbst spüren und lernen, sie durchzuführen. 
+            Die individuelle Anpassung an Sie als Person und an Ihr funktionelles Problem ist uns dabei sehr wichtig. 
+          </p>
+          <br>
+          <p class="text-primary" style="font-weight: 500; text-align: center;">
+            Wir freuen uns, mit Ihnen an Ihrer Gesundheit zu arbeiten!<br>
+            Alke van Leeuwen und Lena Gündel
+          </p>
+        </div>
+      </div>
+
+      <!-- Alke Bio -->
+      <div class="bio-section">
+        <div class="bio-header">
+           <div class="bio-image">
+              <Image src={foto3} alt="Alke van Leeuwen" loading="lazy" width={200} height={200} />
+           </div>
+           <div class="bio-text">
+             <h2>Alke van Leeuwen</h2>
+             <p class="quote">„Ganz individuell für Sie und mit Ihnen an der Qualität Ihrer Bewegungen arbeiten – dies ist mir wichtig! <br>Selbstkompetenz für Ihre Bewegung, für Ihr Leben!»</p>
+           </div>
+        </div>
+        
+        <div class="bio-details">
+          <div class="detail-block">
+            <h3 class="title-underline">Diplome / Zertifikate</h3>
+            <ul>
+              <li>Physiotherapie HF 1988</li>
+              <li>CIFK, zertifizierte Instruktorin in FBL functional kinetics seit 1994</li>
+              <li>Anerkennung Schweizerisches Rotes Kreuz (SRK) 1996</li>
+            </ul>
+          </div>
+          
+          <div class="detail-block">
+            <h3 class="title-underline">Beruflicher Werdegang</h3>
+            <ul>
+              <li><strong>1988:</strong> Diplom Physiotherapeutin</li>
+              <li><strong>1988 – 1991:</strong> Arbeit in Rehabilitationskliniken mit orthopädisch- rheumatologischen Krankheitsbildern</li>
+              <li><strong>1991 – 2000:</strong> Physiotherapeutin in der Rehaklinik Bellikon, SUVA Unfallrehabilitation</li>
+              <li><strong>2001 – 2011:</strong> Teilzeitarbeit in Praxis für Physiotherapie</li>
+              <li><strong>2002 – 2007:</strong> Unterricht an der Physiotherapie-Schule des Stadtspital Triemli, Zürich</li>
+              <li><strong>2011:</strong> Eröffnung der eigenen Physiotherapiepraxis in Bellikon</li>
+            </ul>
+          </div>
+
+          <div class="detail-block">
+            <h3 class="title-underline">Aus- und Weiterbildungen</h3>
+            <ul class="columns-2">
+              <li>Manualtherapie DGMT</li>
+              <li>Myofaszial Release und Faszienmobilisation</li>
+              <li>Systematic Release</li>
+              <li>Triggerpunktbehandlung</li>
+              <li>Nervenmobilisation</li>
+              <li>Kinesiotaping</li>
+              <li>Gewebe orientierte Tastdiagnostik und Therapie</li>
+              <li>Kiefergelenk und Kraniomandibuläre Dysfunktion</li>
+              <li>Neuro-orthopädische Konzepte</li>
+              <li>Entstauungstherapie: Lymphdrainage und Bandagierung</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--color-secondary); margin: 3rem auto; max-width: 900px;">
+
+      <!-- Lena Bio -->
+      <div class="bio-section">
+        <div class="bio-header">
+           <div class="bio-image">
+              <Image src={foto4} alt="Lena Gündel" loading="lazy" width={200} height={200} />
+           </div>
+           <div class="bio-text">
+             <h2>Lena Gündel</h2>
+             <p class="quote">„Bleib beweglich und aktiv nach Deinen Möglichkeiten und mit meiner Unterstützung!“</p>
+           </div>
+        </div>
+        
+        <div class="bio-details">
+          <div class="detail-block">
+            <h3 class="title-underline">Diplome / Zertifikate</h3>
+            <ul>
+              <li>Physiotherapie 1987</li>
+              <li>SRK Anerkennung</li>
+            </ul>
+          </div>
+          
+          <div class="detail-block">
+            <h3 class="title-underline">Aus- und Weiterbildungen</h3>
+            <ul class="columns-2">
+              <li>Entstauungstherapie: Lymphdrainage und Bandagierung</li>
+              <li>Neuro-orthopädische Konzepte</li>
+              <li>Kinesiotaping</li>
+              <li>Funktional kinetics</li>
+              <li>Spiraldynamik</li>
+              <li>Faszientechniken, Faszienmobilisation</li>
+              <li>Neurologische Konzepte</li>
+              <li>Heimbehandlungen</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+  }
+  .team-photo {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    max-width: 100%;
+    height: auto;
+  }
+  .bio-section {
+    margin-top: 2rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 var(--spacing-md);
+  }
+  
+  .bio-details {
+    padding-left: calc(200px + var(--spacing-md));
+  }
+  
+  .bio-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-md);
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .bio-image img {
+    border-radius: 50%; /* Circle option or rounded square */
+    border-radius: var(--radius-sm);
+    width: 100%;
+    max-width: 200px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .quote {
+    font-family: var(--font-quote);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--color-text-light);
+    margin-top: 0.5rem;
+  }
+
+  .bio-details h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-primary-dark);
+    margin-top: 1.5rem;
+    border-bottom: 2px solid var(--color-primary-light);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .bio-details ul {
+    margin-top: 0.5rem;
+    list-style-type: disc;
+    margin-left: 1.5rem;
+  }
+  
+  .columns-2 {
+    column-count: 2;
+    column-gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .split-layout {
+      grid-template-columns: 1fr;
+    }
+    .bio-header {
+       grid-template-columns: 1fr !important;
+       text-align: center; /* Center align bio header on mobile */
+    }
+    .bio-image {
+        justify-self: center; /* Center image */
+    }
+    .bio-details {
+      padding-left: 0;
+      margin-top: 1rem; /* Add spacing between header and details */
+    }
+    .columns-2 { column-count: 1; }
+  }
+</style>

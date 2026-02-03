@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import foto1 from '../assets/images/foto1.jpg';
+import foto7 from '../assets/images/foto7.jpg';
+import foto6 from '../assets/images/foto6.jpg';
+import foto8 from '../assets/images/foto8.jpg';
+import foto9 from '../assets/images/foto9.jpg';
+---
+
+<Layout title="Galerie - Physiotherapie Alke van Leeuwen">
+  <section class="section" style="padding-top: 2rem;">
+      <div class="container">
+          <h1 class="text-center" style="margin-bottom: 2rem;">Galerie</h1>
+          <div class="gallery-masonry" id="gallery-container">
+              <!-- 1. Foto 1 (Span 2) -->
+              <div class="gallery-item"><Image src={foto1} alt="Praxisraum Liege" loading="eager" width={800} /></div>
+              
+              <!-- 2. Innenraum Praxis 2b (Moved from pos 6 to 2) -->
+              <div class="gallery-item"><Image src={foto7} alt="Praxis Innenbereich" loading="lazy" width={800} /></div>
+              
+              <!-- 3. Offene Tür 1 -->
+              <div class="gallery-item"><Image src={foto6} alt="Praxis Eingang offen" loading="lazy" width={400} /></div>
+              
+              <!-- 4. Innenraum mit Trampolin -->
+              <div class="gallery-item"><Image src={foto8} alt="Trainingsbereich" loading="lazy" width={400} /></div>
+              
+              <!-- 5. Figur (End) -->
+              <div class="gallery-item"><Image src={foto9} alt="Therapie Figur" loading="lazy" width={400} /></div>
+          </div>
+      </div>
+
+      <!-- Lightbox Markup -->
+      <div id="lightbox" class="lightbox">
+          <span class="lightbox-close">&times;</span>
+          <span class="lightbox-prev">&#10094;</span>
+          <img class="lightbox-content" id="lightbox-img" src="" alt="Lightbox">
+          <span class="lightbox-next">&#10095;</span>
+      </div>
+  </section>
+</Layout>
+
+<style>
+    .gallery-masonry {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 3 columns on desktop (medium size) */
+        grid-auto-flow: dense;
+        gap: 1rem;
+    }
+
+    .gallery-item {
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        aspect-ratio: 4/3; /* Uniform Aspect Ratio */
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.01);
+        filter: brightness(1.02);
+        box-shadow: var(--shadow-md);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Lightbox Overlay */
+    .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .lightbox.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    .lightbox-content {
+        max-width: 90%;
+        max-height: 90vh;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        object-fit: contain;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 3rem;
+        cursor: pointer;
+        user-select: none;
+        z-index: 2001;
+    }
+
+    .lightbox-prev, .lightbox-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 3rem;
+        cursor: pointer;
+        padding: 1rem;
+        user-select: none;
+        transition: color 0.3s;
+        z-index: 2001;
+    }
+    .lightbox-prev:hover, .lightbox-next:hover, .lightbox-close:hover {
+        color: var(--color-primary);
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    @media (max-width: 768px) {
+        .gallery-masonry { 
+            grid-template-columns: 1fr; /* Single column on mobile */
+        }
+        .gallery-item:nth-child(1),
+        .gallery-item:nth-child(6) {
+            grid-column: auto;
+            aspect-ratio: auto; /* Reset aspect ratio requirement on mobile */
+        }
+        .gallery-item img {
+            height: 300px; /* Consistent height on mobile */
+        }
+    }
+</style>
+
+<script>
+    // Runs on initial load and view transitions
+    document.addEventListener('astro:page-load', () => {
+        const galleryContainer = document.querySelector('#gallery-container');
+        if (galleryContainer) {
+            const lightbox = document.querySelector('#lightbox');
+            const lightboxImg = document.querySelector('#lightbox-img');
+            const closeBtn = document.querySelector('.lightbox-close');
+            const prevBtn = document.querySelector('.lightbox-prev');
+            const nextBtn = document.querySelector('.lightbox-next');
+            const images = Array.from(document.querySelectorAll('.gallery-item img'));
+            
+            let currentIndex = 0;
+
+            const showImage = (index) => {
+                if (index >= 0 && index < images.length) {
+                    lightboxImg.src = images[index].src;
+                    currentIndex = index;
+                    lightbox.classList.add('active');
+                }
+            };
+
+            images.forEach((img, index) => {
+                img.parentElement.addEventListener('click', () => {
+                    showImage(index);
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                }
+            });
+
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                showImage(currentIndex);
+            });
+
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                showImage(currentIndex);
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') lightbox.classList.remove('active');
+                if (e.key === 'ArrowLeft') prevBtn.click();
+                if (e.key === 'ArrowRight') nextBtn.click();
+            });
+        }
+    });
+</script>
