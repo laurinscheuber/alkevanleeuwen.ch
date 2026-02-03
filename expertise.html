@@ -17,7 +17,7 @@
       <div class="container nav-container">
         <a href="/" class="logo">
           <img src="/images/logo.jpg" alt="Logo Alke van Leeuwen" loading="lazy" width="50" height="50">
-          <span>Alke van Leeuwen</span>
+          <span>Physiotherapie Alke van Leeuwen</span>
         </a>
         <nav>
           <ul class="nav-links">
@@ -34,16 +34,16 @@
     </header>
 
     <main>
-      <section class="section">
+      <section class="section" style="padding-top: 2rem;">
         <div class="container">
           <h1 class="text-center" style="margin-bottom: 3rem;">Expertise & Team</h1>
           
           <!-- Team Intro -->
-          <div class="split-layout" style="margin-bottom: 4rem;">
+          <div style="margin-bottom: 4rem; text-align: center;">
               <!-- Using foto2 (Team photo with spine) per "Text 2: Foto 2 von uns beiden..." -->
-              <img src="/images/foto2.jpg" alt="Alke van Leeuwen und Lena Gündel mit Wirbelsäulenmodell" class="team-photo" loading="eager" fetchpriority="high" width="600" height="400">
+              <img src="/images/foto2.jpg" alt="Alke van Leeuwen und Lena Gündel mit Wirbelsäulenmodell" class="team-photo" style="display: inline-block; margin: 0 auto;" loading="eager" fetchpriority="high" width="600" height="400">
             </div>
-            <div class="content">
+            <div class="content" style="max-width: 900px; margin: 0 auto; text-align: justify;">
               <p>
                 Wir sind zwei gut ausgebildete und SRK anerkannte Physiotherapeutinnen mit langjähriger Berufserfahrung. 
                 Stetig haben wir uns durch Kurse in bewährten und neuen Methoden der Physiotherapie weitergebildet.
@@ -69,7 +69,7 @@
                 Die individuelle Anpassung an Sie als Person und an Ihr funktionelles Problem ist uns dabei sehr wichtig. 
               </p>
               <br>
-              <p class="text-primary" style="font-weight: 500;">
+              <p class="text-primary" style="font-weight: 500; text-align: center;">
                 Wir freuen uns, mit Ihnen an Ihrer Gesundheit zu arbeiten!<br>
                 Alke van Leeuwen und Lena Gündel
               </p>
@@ -129,7 +129,7 @@
             </div>
           </div>
 
-          <hr style="border: 0; border-top: 1px solid var(--color-secondary); margin: 3rem 0;">
+          <hr style="border: 0; border-top: 1px solid var(--color-secondary); margin: 3rem auto; max-width: 900px;">
 
           <!-- Lena Bio -->
           <div class="bio-section">
@@ -177,7 +177,7 @@
       <div class="container footer-content">
         <div class="footer-block">
           <h2>Kontakt</h2>
-          <p>Praxis für Physiotherapie<br>Alke van Leeuwen</p>
+          <p>Physiotherapie<br>Alke van Leeuwen</p>
           <p>Haldenstrasse 6<br>CH-5454 Bellikon</p>
           <p>Telefon: 056 - 470 18 75</p>
           <p>Email: <a href="mailto:info@physiotherapie-alkevanleeuwen.ch">info@physiotherapie-alkevanleeuwen.ch</a></p>
@@ -198,15 +198,22 @@
       .team-photo {
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-md);
-        width: 100%;
+        max-width: 100%;
+        height: auto;
       }
       .bio-section {
         margin-top: 2rem;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 var(--spacing-md);
       }
       
       .bio-details {
         padding-left: calc(200px + var(--spacing-md));
       }
+      
+
       
       .bio-header {
         display: grid;
@@ -260,9 +267,14 @@
         }
         .bio-header {
            grid-template-columns: 1fr !important;
+           text-align: center; /* Center align bio header on mobile */
+        }
+        .bio-image {
+            justify-self: center; /* Center image */
         }
         .bio-details {
           padding-left: 0;
+          margin-top: 1rem; /* Add spacing between header and details */
         }
         .columns-2 { column-count: 1; }
       }

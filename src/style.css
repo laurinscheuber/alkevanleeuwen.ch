@@ -51,7 +51,15 @@ body {
   background-color: var(--color-bg-body);
   line-height: 1.6;
   font-weight: 300;
+  font-weight: 300;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
 
 img {
@@ -85,7 +93,7 @@ h1, h2, h3, h4 {
 }
 
 .section {
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-xl) 0; /* Increased from lg to xl for more space */
 }
 
 .text-center { text-align: center; }
@@ -150,12 +158,12 @@ header {
 }
 
 .logo {
-  font-weight: 600;
+  font-weight: 400; /* Lighter weight */
   font-size: 1.2rem;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--color-primary);
+  gap: 20px; /* Increased spacing */
+  color: var(--color-text); /* Grey matching H1 */
 }
 
 .logo img {
@@ -222,6 +230,10 @@ header {
     padding: 0.5rem;
     color: var(--color-text);
   }
+
+  .logo span {
+    display: none;
+  }
 }
 
 /* Footer (Global) */
@@ -229,7 +241,7 @@ footer {
   background-color: var(--color-primary); /* Vibrant Branding Orange */
   color: #FFFFFF;
   padding: var(--spacing-lg) 0;
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
   border-top: none;
 }
 
