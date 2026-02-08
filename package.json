@@ -4,7 +4,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run build:astro && npm run build:studio",
+    "build:astro": "astro build",
+    "build:studio": "cd studio && npm install && npm run build && mkdir -p ../dist/studio && cp -r dist/* ../dist/studio",
     "preview": "astro preview",
     "astro": "astro"
   },
