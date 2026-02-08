@@ -16,22 +16,19 @@ export default {
     {
       name: 'description',
       title: 'Beschreibung',
-      type: 'text',
-      description: 'Eine kurze Beschreibung des Projekts.'
+      type: 'array',
+      of: [{type: 'block'}],
+      description: 'Eine ausführliche Beschreibung des Projekts.'
     },
     {
-      name: 'availability',
-      title: 'Verfügbarkeit',
-      type: 'string',
-      description: 'z.B. "Sofort verfügbar", "Auf Anfrage", "Vermietet"',
+      name: 'slug',
+      title: 'Slug (URL-Pfad)',
+      type: 'slug',
       options: {
-        list: [
-          { title: 'Sofort verfügbar', value: 'Sofort verfügbar' },
-          { title: 'Auf Anfrage', value: 'Auf Anfrage' },
-          { title: 'Vermietet', value: 'Vermietet' },
-          { title: 'Verkauft', value: 'Verkauft' }
-        ],
-      }
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: Rule => Rule.required()
     },
     {
       name: 'mainImage',
