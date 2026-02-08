@@ -4,5 +4,17 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()]
+  integrations: [tailwind()],
+  vite: {
+    server: {
+      proxy: {
+        '/studio': {
+          target: 'http://localhost:3333',
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/studio/, ''),
+        },
+      },
+    },
+  },
 });
