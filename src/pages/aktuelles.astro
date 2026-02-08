@@ -4,8 +4,8 @@ import { client, urlFor } from '../lib/sanity';
 
 const projects = await client.fetch(`*[_type == "project"]{
     title,
-    description,
-    availability,
+    "description": pt::text(description),
+    slug,
     date,
     mainImage
 } | order(date asc)`);
@@ -27,19 +27,22 @@ const projects = await client.fetch(`*[_type == "project"]{
              }) : '';
              
              return (
-              <div class="project-card">
-                  {project.mainImage && (
-                    <img src={urlFor(project.mainImage).width(400).url()} alt={project.title} class="project-image" loading="lazy" />
-                  )}
-                  <div class="project-content">
-                      <h3 class="project-title">{project.title}</h3>
-                      <p class="project-meta">
-                          {project.availability && (<span><strong>Verfügbarkeit:</strong> {project.availability}<br></span>)}
-                          {dateStr && (<span><strong>Termin:</strong> {dateStr} Uhr</span>)}
-                      </p>
-                      <p>{project.description || ''}</p>
-                  </div>
-              </div>
+              <a href={`/aktuelles/${project.slug?.current}`} class="project-card-link">
+                <article class="project-card">
+                    {project.mainImage && (
+                      <div class="image-wrapper">
+                        <img src={urlFor(project.mainImage).width(400).height(250).url()} alt={project.title} class="project-image" loading="lazy" />
+                      </div>
+                    )}
+                    <div class="project-content">
+                        <h3 class="project-title">{project.title}</h3>
+                        <p class="project-meta">
+                            {dateStr && (<span><strong>Termin:</strong> {dateStr} Uhr</span>)}
+                        </p>
+                        <p class="project-description line-clamp-3">{project.description || ''}</p>
+                    </div>
+                </article>
+              </a>
              );
           })}
         </div>
@@ -55,12 +58,22 @@ const projects = await client.fetch(`*[_type == "project"]{
     gap: 2rem;
   }
   
+  .project-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+  }
+
   .project-card {
     background: white;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
   
   .project-card:hover {
@@ -68,14 +81,27 @@ const projects = await client.fetch(`*[_type == "project"]{
     box-shadow: var(--shadow-md);
   }
   
+  .image-wrapper {
+    height: 200px;
+    overflow: hidden;
+  }
+  
   .project-image {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .project-card:hover .project-image {
+    transform: scale(1.05);
   }
   
   .project-content {
     padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   
   .project-title {
@@ -89,5 +115,11 @@ const projects = await client.fetch(`*[_type == "project"]{
     color: var(--color-text-light);
     margin-bottom: 1rem;
     line-height: 1.4;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>
