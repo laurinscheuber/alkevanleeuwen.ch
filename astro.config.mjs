@@ -17,7 +17,7 @@ export default defineConfig({
           target: 'http://localhost:3333',
           changeOrigin: true,
           secure: false,
-          rewrite: (path) => path.replace(/^\/studio/, ''),
+          rewrite: (path) => path === '/studio' || path === '/studio/' ? '/' : path,
         },
       },
     },
