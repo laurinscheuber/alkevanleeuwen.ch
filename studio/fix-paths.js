@@ -10,6 +10,9 @@ try {
   html = html.replace(/src="\/static\//g, 'src="/studio/static/');
   html = html.replace(/href="\/static\//g, 'href="/studio/static/');
   
+  // Fix import map paths
+  html = html.replace(/"\/vendor\//g, '"/studio/vendor/');
+  
   writeFileSync(distPath, html);
   console.log('Successfully updated asset paths in index.html to /studio/static/');
 } catch (error) {
