@@ -3,16 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import { client, urlFor } from '../../lib/sanity';
 import { PortableText } from 'astro-portabletext';
 
-export async function getStaticPaths() {
-  const projects = await client.fetch(`*[_type == "project" && defined(slug.current)]{
-    "slug": slug.current
-  }`);
-
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-  }));
-}
-
 const { slug } = Astro.params;
 const project = await client.fetch(`*[_type == "project" && slug.current == $slug][0]{
   title,

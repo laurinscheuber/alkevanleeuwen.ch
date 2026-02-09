@@ -4,12 +4,17 @@ import tailwind from '@astrojs/tailwind';
 
 import sitemap from '@astrojs/sitemap';
 
+import netlify from '@astrojs/netlify';
+
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
   site: 'https://physiotherapie-alkevanleeuwen.ch',
+
   integrations: [tailwind(), sitemap({
     filter: (page) => !page.includes('/studio'),
   })],
+
   vite: {
     server: {
       proxy: {
@@ -22,4 +27,6 @@ export default defineConfig({
       },
     },
   },
+
+  adapter: netlify(),
 });

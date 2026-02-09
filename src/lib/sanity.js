@@ -7,7 +7,7 @@ const dataset = import.meta.env.PUBLIC_SANITY_DATASET || import.meta.env.VITE_SA
 export const client = createClient({
   projectId: projectId,
   dataset: dataset,
-  useCdn: true,
+  useCdn: false,
   apiVersion: '2023-05-03',
 });
 
