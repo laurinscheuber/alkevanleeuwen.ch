@@ -50,5 +50,9 @@ import mapImage from '../assets/images/map.png';
 
 <style>
     .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
-    @media (max-width: 768px) { .split-layout { grid-template-columns: 1fr; gap: 2rem; } }
+    @media (max-width: 768px) { 
+        .split-layout { grid-template-columns: 1fr; gap: 2rem; } 
+        .map-visual { order: 2; }
+        .contact-info { order: 1; }
+    }
 </style>
