@@ -9,7 +9,7 @@ import mapImage from '../assets/images/map.png';
     <div class="container">
         <h1 class="text-center">Kontakt & Anfahrt</h1>
         <div class="split-layout" style="margin-top: 2rem;">
-            <div class="map-visual">
+            <div class="map-visual hidden md:block">
                 <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} />
                 <p style="text-align: center; font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Lageplan Bellikon</p>
             </div>
@@ -28,6 +28,10 @@ import mapImage from '../assets/images/map.png';
                 <span style="font-size: 0.9rem; color: var(--color-text-light);">(geschützte Patientendaten)</span></p>
                 <br>
                 <h3>Anfahrt & Parken</h3>
+                <div class="md:hidden" style="margin-bottom: 2rem;">
+                    <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} />
+                    <p style="text-align: center; font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Lageplan Bellikon</p>
+                </div>
                 <p style="margin-bottom: 1rem;">
                   <strong>Besucherparkplätze:</strong><br>
                   Befinden sich oberhalb der Praxis hinter den Mehrfamilienhäusern. 
