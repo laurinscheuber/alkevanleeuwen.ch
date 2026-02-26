@@ -2,6 +2,9 @@
   "name": "psychiotherapie-alkevanleeuwen",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": "23.x"
+  },
   "scripts": {
     "dev": "astro dev",
     "dev:studio": "cd studio && npm run dev",
