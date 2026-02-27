@@ -8,6 +8,7 @@ import node from '@astrojs/node';
 export default defineConfig({
   output: 'server',
   site: 'https://physiotherapie-alkevanleeuwen.ch',
+  trailingSlash: 'ignore',
 
   integrations: [tailwind(), sitemap({
     filter: (page) => !page.includes('/studio'),
