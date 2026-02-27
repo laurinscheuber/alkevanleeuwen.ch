@@ -5,9 +5,10 @@
   /* Brand Colors matches Favicon/Logo */
   --color-primary: #EB690B;       /* Vibrant orange from logo figure */
   --color-primary-light: #FFF4EB; /* Soft background tint */
-  --color-primary-dark: #C55800;  /* Darkened from #EB690B for WCAG AA contrast against white */
+  --color-primary-dark: #EB690B;  /* Matching vibrant logo orange exactly for text */
   --color-primary-deep: #EB690B;  /* Simplified to single brand orange */
   --color-on-primary: #FFFFFF;
+
 
   
   --color-secondary: #EBEBEB; 
