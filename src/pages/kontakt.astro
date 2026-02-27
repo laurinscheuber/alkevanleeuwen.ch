@@ -9,9 +9,9 @@ import mapImage from '../assets/images/map.png';
     <div class="container">
         <h1 class="text-center">Kontakt & Anfahrt</h1>
         <div class="split-layout" style="margin-top: 2rem;">
-            <div class="map-visual hidden md:block">
-                <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} />
-                <p style="text-align: center; font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Lageplan Bellikon</p>
+            <div class="map-link hidden md:block">
+                <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} height={581} />
+                <p class="mt-2"><small>Haldenstrasse 6, Bellikon</small></p>
             </div>
             <div class="contact-info">
                 <h3>Adresse</h3>
@@ -28,9 +28,11 @@ import mapImage from '../assets/images/map.png';
                 <span style="font-size: 0.9rem; color: var(--color-text-light);">(geschützte Patientendaten)</span></p>
                 <br>
                 <h3>Anfahrt & Parken</h3>
-                <div class="md:hidden" style="margin-bottom: 2rem;">
-                    <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} />
-                    <p style="text-align: center; font-size: 0.9rem; margin-top: 0.5rem; color: var(--color-text-light);">Lageplan Bellikon</p>
+                <div class="contact-card map-card hidden-mobile md:hidden mt-4">
+                  <div class="map-link">
+                    <Image src={mapImage} alt="Anfahrtsplan Bellikon" style="border-radius: var(--radius-md); box-shadow: var(--shadow-sm); width: 100%;" width={600} height={581} />
+                    <p class="mt-2"><small>Haldenstrasse 6, Bellikon</small></p>
+                  </div>
                 </div>
                 <p style="margin-bottom: 1rem;">
                   <strong>Besucherparkplätze:</strong><br>
