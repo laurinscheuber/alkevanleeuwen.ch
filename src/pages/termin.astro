@@ -1,0 +1,777 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const url = new URL(Astro.request.url);
+const success = url.searchParams.get('success');
+const error = url.searchParams.get('error');
+
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+const minDate = tomorrow.toISOString().split('T')[0];
+---
+
+<Layout title="Termin anfragen - Physiotherapie Alke van Leeuwen">
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <h1 class="text-center">Online Terminanfrage</h1>
+      <p class="text-center subtitle">
+        Fragen Sie hier bequem einen Termin an. Wir melden uns schnellstmöglich bei Ihnen.
+      </p>
+
+      {success && (
+        <div class="alert alert-success" role="alert">
+          Vielen Dank! Ihre Terminanfrage wurde erfolgreich gesendet. Wir melden uns in Kürze bei Ihnen.
+        </div>
+      )}
+
+      {error && (
+        <div class="alert alert-error" role="alert">
+          {error === 'rate'
+            ? 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.'
+            : error === 'send'
+              ? 'Die Anfrage konnte leider nicht gesendet werden. Bitte kontaktieren Sie uns telefonisch.'
+              : error}
+        </div>
+      )}
+
+      <form id="booking-form" method="POST" action="/api/booking" class="booking-form">
+        {/* Honeypot */}
+        <div style="position:absolute;left:-9999px;" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="vorname">Vorname *</label>
+            <input type="text" id="vorname" name="vorname" required autocomplete="given-name" />
+          </div>
+
+          <div class="form-group">
+            <label for="nachname">Nachname *</label>
+            <input type="text" id="nachname" name="nachname" required autocomplete="family-name" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-Mail *</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+            <span class="field-hint" id="email-hint"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="telefon">Telefon *</label>
+            <input type="tel" id="telefon" name="telefon" required autocomplete="tel" placeholder="079 123 45 67" />
+            <span class="field-hint" id="telefon-hint"></span>
+          </div>
+
+          {/* Custom Date Picker */}
+          <div class="form-group">
+            <label>Gewünschtes Datum *</label>
+            {/* Hidden native input for no-JS fallback & form submission */}
+            <input type="date" id="datum" name="datum" required min={minDate} class="datum-native" />
+            {/* Custom picker rendered by JS */}
+            <div class="datepicker" id="datepicker" data-min={minDate}>
+              <button type="button" class="datepicker-trigger" id="datepicker-trigger">
+                <span id="datepicker-display">Datum wählen</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </button>
+              <div class="datepicker-dropdown" id="datepicker-dropdown">
+                <div class="datepicker-header">
+                  <button type="button" class="datepicker-nav" id="dp-prev" aria-label="Vorheriger Monat">&lsaquo;</button>
+                  <span class="datepicker-month" id="dp-month-label"></span>
+                  <button type="button" class="datepicker-nav" id="dp-next" aria-label="Nächster Monat">&rsaquo;</button>
+                </div>
+                <div class="datepicker-weekdays">
+                  <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+                </div>
+                <div class="datepicker-days" id="dp-days"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Custom Dropdown */}
+          <div class="form-group">
+            <label>Zeitpräferenz *</label>
+            {/* Hidden native select for no-JS fallback & form submission */}
+            <select id="zeit" name="zeit" required class="zeit-native">
+              <option value="">Bitte wählen</option>
+              <option value="Morgens">Morgens</option>
+              <option value="Mittags">Mittags</option>
+              <option value="Nachmittags">Nachmittags</option>
+              <option value="Abends">Abends</option>
+            </select>
+            {/* Custom dropdown rendered by JS */}
+            <div class="custom-select" id="custom-select">
+              <button type="button" class="custom-select-trigger" id="select-trigger">
+                <span id="select-display">Bitte wählen</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+              <ul class="custom-select-options" id="select-options" role="listbox">
+                <li role="option" data-value="Morgens">Morgens<span class="option-desc">08:00 – 11:00</span></li>
+                <li role="option" data-value="Mittags">Mittags<span class="option-desc">11:00 – 13:00</span></li>
+                <li role="option" data-value="Nachmittags">Nachmittags<span class="option-desc">13:00 – 17:00</span></li>
+                <li role="option" data-value="Abends">Abends<span class="option-desc">17:00 – 19:00</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="beschreibung">Beschreibung / Grund des Termins *</label>
+          <textarea id="beschreibung" name="beschreibung" rows="4" required></textarea>
+        </div>
+
+        <div id="form-feedback" class="alert" style="display:none;" role="alert"></div>
+
+        <button type="submit" class="btn">Termin anfragen</button>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const form = document.getElementById('booking-form');
+    if (!form) return;
+
+    // --- Phone validation (Swiss format) ---
+    const telefonInput = document.getElementById('telefon');
+    const telefonHint = document.getElementById('telefon-hint');
+    const phoneRegex = /^(\+41|0041|0)\s*\d[\d\s\-\/]{6,14}\d$/;
+
+    function validatePhone(val) {
+      const cleaned = val.replace(/[\s\-\/\(\)]/g, '');
+      if (cleaned.startsWith('+41')) return cleaned.length === 12 && /^\+41\d{9}$/.test(cleaned);
+      if (cleaned.startsWith('0041')) return cleaned.length === 13 && /^0041\d{9}$/.test(cleaned);
+      if (cleaned.startsWith('0')) return cleaned.length === 10 && /^0\d{9}$/.test(cleaned);
+      return false;
+    }
+
+    telefonInput?.addEventListener('blur', () => {
+      const val = telefonInput.value.trim();
+      if (val && !validatePhone(val)) {
+        telefonHint.textContent = 'Bitte Schweizer Nummer eingeben (z.B. 079 123 45 67)';
+        telefonHint.classList.add('error');
+        telefonInput.classList.add('input-error');
+      } else {
+        telefonHint.textContent = '';
+        telefonHint.classList.remove('error');
+        telefonInput.classList.remove('input-error');
+      }
+    });
+
+    // --- Email validation ---
+    const emailInput = document.getElementById('email');
+    const emailHint = document.getElementById('email-hint');
+
+    emailInput?.addEventListener('blur', () => {
+      const val = emailInput.value.trim();
+      if (val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        emailHint.textContent = 'Bitte gültige E-Mail-Adresse eingeben';
+        emailHint.classList.add('error');
+        emailInput.classList.add('input-error');
+      } else {
+        emailHint.textContent = '';
+        emailHint.classList.remove('error');
+        emailInput.classList.remove('input-error');
+      }
+    });
+
+    // --- Custom Date Picker ---
+    const datepicker = document.getElementById('datepicker');
+    const trigger = document.getElementById('datepicker-trigger');
+    const dropdown = document.getElementById('datepicker-dropdown');
+    const display = document.getElementById('datepicker-display');
+    const daysContainer = document.getElementById('dp-days');
+    const monthLabel = document.getElementById('dp-month-label');
+    const prevBtn = document.getElementById('dp-prev');
+    const nextBtn = document.getElementById('dp-next');
+    const nativeDateInput = document.getElementById('datum');
+    const minDateStr = datepicker?.dataset.min;
+
+    if (datepicker && nativeDateInput) {
+      // Hide native, show custom
+      nativeDateInput.classList.add('hidden');
+      datepicker.classList.add('active');
+
+      const minDate = new Date(minDateStr + 'T00:00:00');
+      let viewMonth = minDate.getMonth();
+      let viewYear = minDate.getFullYear();
+      let selectedDate = null;
+
+      const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+      function renderCalendar() {
+        monthLabel.textContent = `${MONTHS_DE[viewMonth]} ${viewYear}`;
+        daysContainer.innerHTML = '';
+
+        const firstDay = new Date(viewYear, viewMonth, 1);
+        // Monday=0 offset
+        let startDay = firstDay.getDay() - 1;
+        if (startDay < 0) startDay = 6;
+
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+        // Empty cells for offset
+        for (let i = 0; i < startDay; i++) {
+          const empty = document.createElement('span');
+          empty.className = 'dp-day dp-empty';
+          daysContainer.appendChild(empty);
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'dp-day';
+          btn.textContent = d;
+
+          const cellDate = new Date(viewYear, viewMonth, d);
+          const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+          const dayOfWeek = cellDate.getDay();
+
+          if (cellDate < minDate || dayOfWeek === 0 || dayOfWeek === 6) {
+            btn.disabled = true;
+            btn.classList.add('dp-disabled');
+          }
+
+          if (dayOfWeek === 0 || dayOfWeek === 6) {
+            btn.classList.add('dp-weekend');
+          }
+
+          if (selectedDate === dateStr) {
+            btn.classList.add('dp-selected');
+          }
+
+          // Today marker
+          const today = new Date();
+          if (cellDate.getFullYear() === today.getFullYear() && cellDate.getMonth() === today.getMonth() && cellDate.getDate() === today.getDate()) {
+            btn.classList.add('dp-today');
+          }
+
+          btn.addEventListener('click', () => {
+            selectedDate = dateStr;
+            nativeDateInput.value = dateStr;
+            display.textContent = cellDate.toLocaleDateString('de-CH', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+            trigger.classList.add('has-value');
+            dropdown.classList.remove('open');
+            renderCalendar();
+          });
+
+          daysContainer.appendChild(btn);
+        }
+
+        // Disable prev if at min month
+        prevBtn.disabled = viewYear === minDate.getFullYear() && viewMonth === minDate.getMonth();
+      }
+
+      trigger.addEventListener('click', () => {
+        dropdown.classList.toggle('open');
+      });
+
+      prevBtn.addEventListener('click', () => {
+        viewMonth--;
+        if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+        renderCalendar();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        viewMonth++;
+        if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+        renderCalendar();
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!datepicker.contains(e.target)) {
+          dropdown.classList.remove('open');
+        }
+      });
+
+      renderCalendar();
+    }
+
+    // --- Custom Select ---
+    const customSelect = document.getElementById('custom-select');
+    const selectTrigger = document.getElementById('select-trigger');
+    const selectDisplay = document.getElementById('select-display');
+    const selectOptions = document.getElementById('select-options');
+    const nativeSelect = document.getElementById('zeit');
+
+    if (customSelect && nativeSelect) {
+      // Hide native, show custom
+      nativeSelect.classList.add('hidden');
+      customSelect.classList.add('active');
+
+      selectTrigger.addEventListener('click', () => {
+        selectOptions.classList.toggle('open');
+        selectTrigger.classList.toggle('open');
+      });
+
+      selectOptions.querySelectorAll('[data-value]').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const val = opt.dataset.value;
+          nativeSelect.value = val;
+          selectDisplay.textContent = val;
+          selectTrigger.classList.add('has-value');
+          selectOptions.classList.remove('open');
+          selectTrigger.classList.remove('open');
+
+          // Mark selected
+          selectOptions.querySelectorAll('[data-value]').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!customSelect.contains(e.target)) {
+          selectOptions.classList.remove('open');
+          selectTrigger.classList.remove('open');
+        }
+      });
+
+      // Keyboard navigation
+      selectTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectOptions.classList.toggle('open');
+          selectTrigger.classList.toggle('open');
+        }
+      });
+    }
+
+    // --- Form submission (enhanced with fetch) ---
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const feedback = document.getElementById('form-feedback');
+      const btn = form.querySelector('button[type="submit"]');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      btn.disabled = true;
+      btn.textContent = 'Wird gesendet...';
+      feedback.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          feedback.className = 'alert alert-success';
+          feedback.textContent = 'Vielen Dank! Ihre Terminanfrage wurde erfolgreich gesendet.';
+          feedback.style.display = 'block';
+          form.reset();
+          // Reset custom components
+          if (display) { display.textContent = 'Datum wählen'; trigger?.classList.remove('has-value'); }
+          if (selectDisplay) { selectDisplay.textContent = 'Bitte wählen'; selectTrigger?.classList.remove('has-value'); }
+          selectOptions?.querySelectorAll('[data-value]').forEach(o => o.classList.remove('selected'));
+        } else {
+          const msg = result.errors?.join(', ') || result.error || 'Ein Fehler ist aufgetreten.';
+          feedback.className = 'alert alert-error';
+          feedback.textContent = msg;
+          feedback.style.display = 'block';
+        }
+      } catch {
+        feedback.className = 'alert alert-error';
+        feedback.textContent = 'Verbindungsfehler. Bitte versuchen Sie es erneut.';
+        feedback.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Termin anfragen';
+      }
+    });
+  });
+</script>
+
+<style>
+  .subtitle {
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-lg);
+    max-width: 50ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .booking-form {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(235, 105, 11, 0.1);
+  }
+
+  input.input-error {
+    border-color: #dc2626;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .field-hint {
+    display: block;
+    font-size: 0.8rem;
+    min-height: 1.2em;
+    margin-top: 0.2rem;
+    color: var(--color-text-light);
+  }
+
+  .field-hint.error {
+    color: #dc2626;
+  }
+
+  /* Hide native inputs when JS custom components are active */
+  .hidden {
+    display: none !important;
+  }
+
+  /* ===== Custom Date Picker ===== */
+  .datepicker {
+    display: none;
+    position: relative;
+  }
+  .datepicker.active {
+    display: block;
+  }
+
+  .datepicker-trigger {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text-light);
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .datepicker-trigger:hover {
+    border-color: var(--color-primary);
+  }
+
+  .datepicker-trigger:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(235, 105, 11, 0.1);
+  }
+
+  .datepicker-trigger.has-value {
+    color: var(--color-text);
+  }
+
+  .datepicker-trigger svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .datepicker-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-float);
+    padding: 1rem;
+    width: 300px;
+  }
+
+  .datepicker-dropdown.open {
+    display: block;
+  }
+
+  .datepicker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .datepicker-month {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .datepicker-nav {
+    background: none;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-sm);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    transition: all 0.15s ease;
+  }
+
+  .datepicker-nav:hover:not(:disabled) {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .datepicker-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .datepicker-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-light);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .datepicker-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  /* Dynamic elements need :global() since they lack Astro's scoping attribute */
+  .datepicker-days :global(.dp-day) {
+    width: 100%;
+    aspect-ratio: 1;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .datepicker-days :global(.dp-day:hover:not(:disabled):not(.dp-empty)) {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .datepicker-days :global(.dp-day.dp-disabled) {
+    color: #d5d5d5;
+    cursor: not-allowed;
+  }
+
+  .datepicker-days :global(.dp-day.dp-weekend) {
+    color: #c0c0c0;
+    background: #ebebeb;
+    text-decoration: line-through;
+  }
+
+  .datepicker-days :global(.dp-day.dp-today:not(.dp-selected)) {
+    font-weight: 600;
+    border: 1px solid var(--color-primary);
+  }
+
+  .datepicker-days :global(.dp-day.dp-selected) {
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .datepicker-days :global(.dp-empty) {
+    cursor: default;
+  }
+
+  /* ===== Custom Select ===== */
+  .custom-select {
+    display: none;
+    position: relative;
+  }
+  .custom-select.active {
+    display: block;
+  }
+
+  .custom-select-trigger {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text-light);
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .custom-select-trigger:hover {
+    border-color: var(--color-primary);
+  }
+
+  .custom-select-trigger:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(235, 105, 11, 0.1);
+  }
+
+  .custom-select-trigger.has-value {
+    color: var(--color-text);
+  }
+
+  .custom-select-trigger svg {
+    transition: transform 0.2s ease;
+    color: var(--color-text-light);
+  }
+
+  .custom-select-trigger.open svg {
+    transform: rotate(180deg);
+  }
+
+  .custom-select-options {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-float);
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .custom-select-options.open {
+    display: block;
+  }
+
+  .custom-select-options li {
+    padding: 0.7rem 0.9rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.15s ease;
+    font-size: 0.95rem;
+  }
+
+  .custom-select-options li:hover {
+    background: var(--color-primary-light);
+  }
+
+  .custom-select-options li.selected {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .custom-select-options li.selected .option-desc {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .option-desc {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+  }
+
+  /* ===== Alerts & Submit ===== */
+  .alert {
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .alert-success {
+    background-color: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+
+  .alert-error {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    font-size: 1.05rem;
+    margin-top: var(--spacing-xs);
+  }
+
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .datepicker-dropdown {
+      width: 100%;
+    }
+  }
+</style>
