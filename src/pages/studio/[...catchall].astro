@@ -1,0 +1,34 @@
+---
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+// Wir holen uns den Pfad zum gebauten Studio index.html
+const rootDir = process.cwd();
+const htmlFile = path.join(rootDir, 'dist/client/studio/index.html');
+
+let html = '';
+try {
+  // Wenn das Studio fertig gebaut wurde ( npm run build ),
+  // lesen wir hier einfach dessen fertige index.html Seite aus.
+  html = await fs.readFile(htmlFile, 'utf8');
+} catch (e) {
+  html = `
+    <html>
+      <head><title>Studio Loading Error</title></head>
+      <body style="font-family: sans-serif; padding: 2rem;">
+        <h1>Sanity Studio wurde nicht gefunden</h1>
+        <p>Dies passiert meistens lokal, wenn 'npm run build' noch nicht ausgeführt wurde.</p>
+        <p>Für die lokale Entwicklung, stelle sicher, dass du <b>npm run dev:studio</b> in einem eigenen Terminal gestartet hast und auf localhost:3333 bist.</p>
+        <pre style="background:#eee;padding:1rem;">${e.message}</pre>
+      </body>
+    </html>
+  `;
+}
+
+// Und geben sie an den Browser zurück
+return new Response(html, {
+  headers: {
+    'Content-Type': 'text/html',
+  },
+});
+---
