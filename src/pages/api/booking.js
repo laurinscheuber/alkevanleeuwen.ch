@@ -187,7 +187,7 @@ export async function POST({ request }) {
   try {
     const mailOptions = {
       from: import.meta.env.SMTP_FROM || 'Terminanfrage <noreply@physiotherapie-alkevanleeuwen.ch>',
-      to: import.meta.env.SMTP_TO || 'test@scheuber.dev',
+      to: import.meta.env.SMTP_TO || 'info@physiotherapie-alkevanleeuwen.ch',
       replyTo: data.email,
       subject: `Terminanfrage von ${data.vorname} ${data.nachname}`,
       html: htmlEmail,
