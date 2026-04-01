@@ -10,6 +10,10 @@ export default defineConfig({
   site: 'https://physiotherapie-alkevanleeuwen.ch',
   trailingSlash: 'ignore',
 
+  security: {
+    checkOrigin: false
+  },
+
   integrations: [tailwind(), sitemap({
     filter: (page) => !page.includes('/studio'),
   })],
