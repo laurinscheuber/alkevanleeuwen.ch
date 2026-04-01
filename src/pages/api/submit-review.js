@@ -174,7 +174,7 @@ export async function POST({ request }) {
   try {
     const mailOptions = {
       from: import.meta.env.SMTP_FROM || 'Bewertungen <noreply@physiotherapie-alkevanleeuwen.ch>',
-      to: import.meta.env.SMTP_TO || 'test-bewertung@scheuber.dev', // Später zurück auf info@physiotherapie-alkevanleeuwen.ch ändern
+      to: import.meta.env.SMTP_TO || 'info@physiotherapie-alkevanleeuwen.ch',
       replyTo: data.email || undefined,
       subject: `Neue Bewertung zum prüfen eingetroffen (${ratingNum} Sterne von ${data.name})`,
       html: htmlEmail,
