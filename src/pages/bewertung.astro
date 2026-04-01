@@ -1,0 +1,295 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Get URL params for error/success handling
+const error = Astro.url.searchParams.get('error');
+const success = Astro.url.searchParams.get('success');
+---
+
+<Layout title="Bewertung abgeben - Physiotherapie Alke van Leeuwen">
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container max-w-3xl mx-auto">
+      <div class="text-center mb-10">
+        <h1 class="mb-4">Ihre Erfahrung bei uns</h1>
+        <p class="text-lg text-gray-600">
+          Ihre Meinung ist uns sehr wichtig! Wir freuen uns, wenn Sie sich kurz Zeit nehmen, 
+          um Ihre Behandlung in unserer Praxis zu bewerten.
+        </p>
+      </div>
+
+      {success === '1' ? (
+        <div class="success-message">
+          <div class="success-icon">&#10004;</div>
+          <h3>Vielen Dank für Ihre Bewertung!</h3>
+          <p>Wir haben Ihr Feedback erhalten. Es wird nach einer kurzen Prüfung auf unserer Website veröffentlicht.</p>
+          <a href="/" class="btn mt-6 inline-block">Zurück zur Startseite</a>
+        </div>
+      ) : (
+        <form action="/api/submit-review" method="POST" class="review-form">
+          {error && (
+            <div class="error-banner">
+              <strong>Fehler:</strong> {error === 'cms' ? 'Systemfehler beim Speichern. Bitte versuchen Sie es später erneut.' : decodeURIComponent(error)}
+            </div>
+          )}
+
+          <!-- Honeypot -->
+          <div style="position: absolute; left: -5000px;" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" value="">
+          </div>
+
+          <div class="form-group">
+            <label for="name">Ihr Name (wie er angezeigt werden soll) *</label>
+            <input type="text" id="name" name="name" required placeholder="z.B. Anna M.">
+          </div>
+
+          <div class="form-group">
+            <label>Wie zufrieden waren Sie? *</label>
+            <div class="star-rating margin-top-xs">
+              <div class="stars-container" id="stars-container">
+                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 Sterne"></label>
+                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 Sterne"></label>
+                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 Sterne"></label>
+                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 Sterne"></label>
+                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 Stern"></label>
+              </div>
+              <span id="rating-value-display" class="rating-text">Bitte wählen</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Datum Ihres Besuchs / der Behandlung *</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="text">Ihre Bewertung *</label>
+            <textarea id="text" name="text" rows="5" required placeholder="Teilen Sie uns und anderen mit, wie Sie die Behandlung empfunden haben..."></textarea>
+          </div>
+
+          <hr class="my-8" style="border:0; border-top: 1px solid #eee;" />
+          
+          <h3 class="mb-4 text-xl">Kontaktaufnahme (Optional)</h3>
+          <p class="text-sm text-gray-500 mb-4">Geben Sie hier Ihre E-Mail Adresse an, falls wir Sie exklusiv bei Fragen zu Ihrem Feedback kontaktieren dürfen. Diese wird <strong>nicht</strong> veröffentlicht.</p>
+          
+          <div class="form-group">
+            <label for="email">E-Mail Adresse (intern)</label>
+            <input type="email" id="email" name="email" placeholder="ihre@email.ch">
+          </div>
+
+          <div class="form-group checkbox-group" id="contact-request-group">
+            <input type="checkbox" id="contactRequested" name="contactRequested">
+            <label for="contactRequested">Ich wünsche, dass mich die Praxis gegebenenfalls kontaktiert.</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full mt-6" style="padding: 1rem; font-size: 1.1rem;">Bewertung absenden</button>
+        </form>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .review-form {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="date"],
+  .form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--color-text);
+    background-color: #fafafa;
+    transition: all 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(235, 105, 11, 0.1);
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: var(--radius-sm);
+    border: 1px solid #eee;
+    transition: opacity 0.3s;
+  }
+  
+  .checkbox-group label {
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+  
+  .checkbox-group.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Star Rating System using CSS trick (right to left float) */
+  .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .rating-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text-light);
+    min-width: 60px;
+  }
+
+  .stars-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  .stars-container input {
+    display: none;
+  }
+
+  .stars-container label {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 0;
+    font-size: 2.5rem;
+    color: #ddd;
+    cursor: pointer;
+    line-height: 1;
+    margin: 0 !important;
+  }
+
+  .stars-container label::before {
+    content: '★'; /* solid star */
+    display: inline-block;
+  }
+
+  /* Hover and Checked states */
+  .stars-container label:hover,
+  .stars-container label:hover ~ label,
+  .stars-container input:checked ~ label {
+    color: #FFB300 !important;
+  }
+
+  /* Success Message */
+  .success-message {
+    background: #fff;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+  }
+
+  .success-icon {
+    font-size: 4rem;
+    color: #48bb78;
+    margin-bottom: 1rem;
+  }
+
+  .success-message h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .error-banner {
+    background-color: #fff5f5;
+    color: #c53030;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid #f56565;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .review-form {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    // 1. Set Date to Today
+    const dateInput = document.getElementById('date') as HTMLInputElement;
+    if (dateInput && !dateInput.value) {
+      dateInput.value = new Date().toISOString().split('T')[0];
+    }
+
+    // 2. Star Text Display Logic
+    const starsInputs = document.querySelectorAll('.stars-container input[type="radio"]');
+    const ratingDisplay = document.getElementById('rating-value-display');
+    
+    if (starsInputs.length > 0 && ratingDisplay) {
+      starsInputs.forEach(input => {
+        input.addEventListener('change', (e) => {
+          const val = (e.target as HTMLInputElement).value;
+          ratingDisplay.textContent = val + ' / 5';
+          ratingDisplay.style.color = '#333';
+        });
+      });
+    }
+
+    // 3. Email Checkbox Logic
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const checkboxGroup = document.getElementById('contact-request-group');
+    const contactRequested = document.getElementById('contactRequested') as HTMLInputElement;
+
+    function evaluateEmail() {
+      if (!emailInput || !checkboxGroup || !contactRequested) return;
+      
+      const val = emailInput.value.trim();
+      const isValidish = val.includes('@') && val.includes('.');
+      
+      if (isValidish) {
+        checkboxGroup.classList.remove('disabled');
+        contactRequested.disabled = false;
+      } else {
+        checkboxGroup.classList.add('disabled');
+        contactRequested.disabled = true;
+        contactRequested.checked = false;
+      }
+    }
+
+    if (emailInput) {
+      // Initial state
+      evaluateEmail();
+      // On changes
+      emailInput.addEventListener('input', evaluateEmail);
+    }
+  });
+</script>

@@ -28,6 +28,17 @@ export default {
       type: 'date',
     },
     {
+      name: 'email',
+      title: 'E-Mail',
+      type: 'string',
+    },
+    {
+      name: 'contactRequested',
+      title: 'Rückfrage erwünscht',
+      type: 'boolean',
+      initialValue: false,
+    },
+    {
       name: 'featured',
       title: 'Auf Startseite anzeigen',
       type: 'boolean',

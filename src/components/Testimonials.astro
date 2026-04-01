@@ -2,6 +2,7 @@
 import { client } from '../lib/sanity';
 
 let testimonials = [];
+let stats = { total: 0, average: 0 };
 try {
   testimonials = await client.fetch(
     `*[_type == "testimonial" && featured == true] | order(date desc)[0...6]{
@@ -11,6 +12,14 @@ try {
       date
     }`
   );
+
+  const allRatings: number[] = await client.fetch(`*[_type == "testimonial" && defined(rating)].rating`);
+  if (allRatings && allRatings.length > 0) {
+    const sum = allRatings.reduce((a, b) => a + b, 0);
+    const avg = sum / allRatings.length;
+    stats.total = allRatings.length;
+    stats.average = Math.round(avg * 10) / 10;
+  }
 } catch (e) {
   console.warn('Could not fetch testimonials', e);
 }
@@ -20,6 +29,11 @@ try {
   <section class="section testimonials-section">
     <div class="container">
       <h2 class="text-center testimonial-title">Was unsere Klient:innen sagen</h2>
+      {stats.total > 0 && (
+        <p class="text-center testimonial-stats">
+          <span class="stars-icon">&#9733;</span> <strong style="font-size: 1.3rem;">{Number(stats.average).toFixed(1)}</strong> ({stats.total} Bewertungen)
+        </p>
+      )}
       
       <div class="testimonials-slider">
         {testimonials.length > 1 && (
@@ -66,6 +80,10 @@ try {
         )}
       </div>
 
+      <div class="text-center" style="margin-top: 2rem;">
+        <a href="/bewertung" class="btn" style="background-color: transparent; border: 2px solid var(--color-primary); color: var(--color-primary); padding: 0.8rem 2rem;">Bewertung abgeben</a>
+      </div>
+
     </div>
   </section>
 )}
@@ -84,7 +102,22 @@ try {
 
   .testimonial-title {
     font-size: 2.2rem;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .testimonial-stats {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+  }
+  
+  .testimonial-stats strong {
+    color: var(--color-text);
+  }
+
+  .stars-icon {
+    color: #FFB300;
+    font-size: 1.2rem;
   }
 
   .testimonials-slider {
