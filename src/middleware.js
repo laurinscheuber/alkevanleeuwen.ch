@@ -21,7 +21,7 @@ export async function onRequest({ request }, next) {
   );
   mutableHeaders.set(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' cdn.sanity.io data:; font-src 'self'; connect-src 'self' o456yg1x.api.sanity.io ws: wss:; frame-ancestors 'none'"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' data:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' cdn.sanity.io data:; font-src 'self'; connect-src 'self' o456yg1x.api.sanity.io ws: wss:; frame-ancestors 'none'"
   );
 
   return new Response(response.body, {
