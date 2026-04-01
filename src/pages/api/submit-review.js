@@ -72,6 +72,7 @@ export async function POST({ request }) {
 
   // Sanity submission
   let createdDocId = '';
+  let studioDocId = ''; // Ohne 'drafts.' prefix (wichtig für den Link)
   try {
     const writeClient = client.withConfig({ token: import.meta.env.SANITY_API_TOKEN });
     
@@ -81,7 +82,12 @@ export async function POST({ request }) {
       throw new Error("CMS Konfigurationsfehler: Token fehlt.");
     }
 
+    // Generieren einer eigenen ID, um sie explizit als Draft zu prefixen
+    const uniqueId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).substring(2));
+    studioDocId = `review-${uniqueId}`;
+
     const docToCreate = {
+      _id: `drafts.${studioDocId}`, // Macht das Dokument zu einem echten Sanity-Draft!
       _type: 'testimonial',
       name: data.name,
       text: data.text,
@@ -89,7 +95,7 @@ export async function POST({ request }) {
       date: reviewDate,
       email: data.email || null,
       contactRequested: contactRequested,
-      featured: false // WICHTIG: Noch nicht auf Startseite anzeigen
+      featured: false // Standardmässig nicht auf Homepage, auch nicht nach 'Publish' (Alke muss es manuell aktivieren wenn es auf Homepage soll)
     };
 
     const created = await writeClient.create(docToCreate);
@@ -144,7 +150,7 @@ export async function POST({ request }) {
           </table>
           
           <div style="margin-top: 35px; text-align: center;">
-            <a href="https://physiotherapie-alkevanleeuwen.ch/studio/desk/testimonial;${createdDocId}" style="display: inline-block; background-color: #EB690B; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 16px;">Bewertung prüfen & veröffentlichen</a>
+            <a href="https://physiotherapie-alkevanleeuwen.ch/studio/desk/testimonial;${studioDocId}" style="display: inline-block; background-color: #EB690B; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 16px;">Bewertung prüfen & veröffentlichen</a>
           </div>
           
           <p style="text-align: center; margin-top: 15px; font-size: 13px; color: #888;">
