@@ -1,6 +1,10 @@
 import nodemailer from 'nodemailer';
 import { client } from '../../lib/sanity'; // Adjust path if needed
 
+function redirect(path) {
+  return new Response(null, { status: 303, headers: { Location: path } });
+}
+
 const transporter = nodemailer.createTransport({
   host: import.meta.env.SMTP_HOST,
   port: parseInt(import.meta.env.SMTP_PORT || '587'),
@@ -40,7 +44,7 @@ export async function POST({ request }) {
   const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'unknown';
 
   if (isRateLimited(ip)) {
-    return Response.redirect(new URL('/bewertung?error=rate', request.url), 303);
+    return redirect('/bewertung?error=rate');
   }
 
   const formData = await request.formData();
@@ -48,7 +52,7 @@ export async function POST({ request }) {
 
   // Honeypot check
   if (data.website) {
-    return Response.redirect(new URL('/bewertung?success=1', request.url), 303);
+    return redirect('/bewertung?success=1');
   }
 
   // Validate required fields
@@ -58,7 +62,7 @@ export async function POST({ request }) {
   if (!data.rating) errors.push('Bewertung ist erforderlich');
 
   if (errors.length > 0) {
-    return Response.redirect(new URL(`/bewertung?error=${encodeURIComponent(errors[0])}`, request.url), 303);
+    return redirect(`/bewertung?error=${encodeURIComponent(errors[0])}`);
   }
 
   const ratingNum = parseFloat(data.rating);
@@ -102,7 +106,7 @@ export async function POST({ request }) {
     createdDocId = created._id;
   } catch (e) {
     console.error('Sanity creation failed:', e);
-    return Response.redirect(new URL('/bewertung?error=cms', request.url), 303);
+    return redirect('/bewertung?error=cms');
   }
 
   // Send Email Notification
@@ -179,5 +183,5 @@ export async function POST({ request }) {
     // Even if email fails, it's in Sanity, but we might want to warn them. Usually redirect to success anyway.
   }
 
-  return Response.redirect(new URL('/bewertung?success=1', request.url), 303);
+  return redirect('/bewertung?success=1');
 }

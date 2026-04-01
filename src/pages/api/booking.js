@@ -1,5 +1,9 @@
 import nodemailer from 'nodemailer';
 
+function redirect(path) {
+  return new Response(null, { status: 303, headers: { Location: path } });
+}
+
 const transporter = nodemailer.createTransport({
   host: import.meta.env.SMTP_HOST,
   port: parseInt(import.meta.env.SMTP_PORT || '587'),
@@ -85,7 +89,7 @@ export async function POST({ request }) {
 
   if (isRateLimited(ip)) {
     if (isFormPost) {
-      return Response.redirect(new URL('/termin?error=rate', request.url), 303);
+      return redirect('/termin?error=rate');
     }
     return new Response(JSON.stringify({ error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' }), {
       status: 429,
@@ -104,7 +108,7 @@ export async function POST({ request }) {
   // Honeypot check
   if (data.website) {
     if (isFormPost) {
-      return Response.redirect(new URL('/termin?success=1', request.url), 303);
+      return redirect('/termin?success=1');
     }
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
@@ -115,7 +119,7 @@ export async function POST({ request }) {
   const errors = validate(data);
   if (errors.length > 0) {
     if (isFormPost) {
-      return Response.redirect(new URL(`/termin?error=${encodeURIComponent(errors[0])}`, request.url), 303);
+      return redirect(`/termin?error=${encodeURIComponent(errors[0])}`);
     }
     return new Response(JSON.stringify({ errors }), {
       status: 400,
@@ -196,7 +200,7 @@ export async function POST({ request }) {
   } catch (e) {
     console.error('Email send failed:', e);
     if (isFormPost) {
-      return Response.redirect(new URL('/termin?error=send', request.url), 303);
+      return redirect('/termin?error=send');
     }
     return new Response(JSON.stringify({ error: 'E-Mail konnte nicht gesendet werden.' }), {
       status: 500,
@@ -205,7 +209,7 @@ export async function POST({ request }) {
   }
 
   if (isFormPost) {
-    return Response.redirect(new URL('/termin?success=1', request.url), 303);
+    return redirect('/termin?success=1');
   }
   return new Response(JSON.stringify({ success: true }), {
     status: 200,
