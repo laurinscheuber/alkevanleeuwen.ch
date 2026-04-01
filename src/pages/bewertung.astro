@@ -56,9 +56,29 @@ const success = Astro.url.searchParams.get('success');
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="date">Datum Ihres Besuchs / der Behandlung *</label>
-            <input type="date" id="date" name="date" required>
+          {/* Custom Date Picker */}
+          <div class="form-group" style="position: relative;">
+            <label>Datum Ihres Besuchs / der Behandlung *</label>
+            <input type="date" id="date" name="date" required class="datum-native" />
+            <div class="datepicker" id="datepicker">
+              <button type="button" class="datepicker-trigger" id="datepicker-trigger">
+                <span id="datepicker-display">Datum wählen</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </button>
+              <div class="datepicker-dropdown" id="datepicker-dropdown">
+                <div class="datepicker-header">
+                  <button type="button" class="datepicker-nav" id="dp-prev" aria-label="Vorheriger Monat">&lsaquo;</button>
+                  <span class="datepicker-month" id="dp-month-label"></span>
+                  <button type="button" class="datepicker-nav" id="dp-next" aria-label="Nächster Monat">&rsaquo;</button>
+                </div>
+                <div class="datepicker-weekdays">
+                  <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+                </div>
+                <div class="datepicker-days" id="dp-days"></div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -239,15 +259,317 @@ const success = Astro.url.searchParams.get('success');
     .review-form {
       padding: 1.5rem;
     }
+    .datepicker-dropdown {
+      width: 100% !important;
+    }
+  }
+
+  /* Hide native inputs when JS custom components are active */
+  .hidden {
+    display: none !important;
+  }
+
+  /* ===== Custom Date Picker ===== */
+  .datepicker {
+    display: none;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .datepicker.active {
+    display: block;
+  }
+
+  .datepicker-trigger {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--color-text-light);
+    background: #fafafa;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+  }
+
+  .datepicker-trigger:hover {
+    border-color: var(--color-primary);
+  }
+
+  .datepicker-trigger:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(235, 105, 11, 0.1);
+  }
+
+  .datepicker-trigger.has-value {
+    color: var(--color-text);
+  }
+
+  .datepicker-trigger svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .datepicker-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-float);
+    padding: 1rem;
+    width: 320px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .datepicker-dropdown.open {
+    display: block;
+  }
+
+  .datepicker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .datepicker-month {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .datepicker-nav {
+    background: none;
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-sm);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    transition: all 0.15s ease;
+  }
+
+  .datepicker-nav:hover:not(:disabled) {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .datepicker-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .datepicker-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-light);
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .datepicker-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  /* Dynamic elements */
+  .datepicker-days :global(.dp-day) {
+    width: 100%;
+    aspect-ratio: 1;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  .datepicker-days :global(.dp-day:hover:not(:disabled):not(.dp-empty)) {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .datepicker-days :global(.dp-day.dp-disabled) {
+    color: #d5d5d5;
+    cursor: not-allowed;
+  }
+
+  .datepicker-days :global(.dp-day.dp-today:not(.dp-selected)) {
+    font-weight: 600;
+    border: 1px solid var(--color-primary);
+  }
+
+  .datepicker-days :global(.dp-day.dp-selected) {
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .datepicker-days :global(.dp-empty) {
+    cursor: default;
   }
 </style>
 
 <script>
   document.addEventListener('astro:page-load', () => {
-    // 1. Set Date to Today
-    const dateInput = document.getElementById('date') as HTMLInputElement;
-    if (dateInput && !dateInput.value) {
-      dateInput.value = new Date().toISOString().split('T')[0];
+    // 1. Custom Date Picker Logic
+    const datepicker = document.getElementById('datepicker');
+    const trigger = document.getElementById('datepicker-trigger');
+    const dropdown = document.getElementById('datepicker-dropdown');
+    const display = document.getElementById('datepicker-display');
+    const daysContainer = document.getElementById('dp-days');
+    const monthLabel = document.getElementById('dp-month-label');
+    const prevBtn = document.getElementById('dp-prev') as HTMLButtonElement;
+    const nextBtn = document.getElementById('dp-next') as HTMLButtonElement;
+    const nativeDateInput = document.getElementById('date') as HTMLInputElement;
+
+    if (datepicker && nativeDateInput) {
+      nativeDateInput.classList.add('hidden');
+      datepicker.classList.add('active');
+
+      const todayDate = new Date();
+      todayDate.setHours(0,0,0,0);
+      
+      let viewMonth = todayDate.getMonth();
+      let viewYear = todayDate.getFullYear();
+      let selectedDate: string | null = null;
+      
+      if (!nativeDateInput.value) {
+        const todayStr = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
+        nativeDateInput.value = todayStr;
+        selectedDate = todayStr;
+        if (display) {
+          display.textContent = todayDate.toLocaleDateString('de-CH', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+        }
+        if (trigger) trigger.classList.add('has-value');
+      } else {
+        selectedDate = nativeDateInput.value;
+        const sd = new Date(selectedDate);
+        if (display) display.textContent = sd.toLocaleDateString('de-CH', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+        if (trigger) trigger.classList.add('has-value');
+      }
+
+      const MONTHS_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+      function renderCalendar() {
+        if (!monthLabel || !daysContainer) return;
+        monthLabel.textContent = `${MONTHS_DE[viewMonth]} ${viewYear}`;
+        daysContainer.innerHTML = '';
+
+        const firstDay = new Date(viewYear, viewMonth, 1);
+        let startDay = firstDay.getDay() - 1;
+        if (startDay < 0) startDay = 6;
+
+        const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+        for (let i = 0; i < startDay; i++) {
+          const empty = document.createElement('span');
+          empty.className = 'dp-day dp-empty';
+          daysContainer.appendChild(empty);
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'dp-day';
+          btn.textContent = d.toString();
+
+          const cellDate = new Date(viewYear, viewMonth, d);
+          const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+          // Disable future dates
+          if (cellDate > todayDate) {
+            btn.disabled = true;
+            btn.classList.add('dp-disabled');
+          }
+
+          if (selectedDate === dateStr) {
+            btn.classList.add('dp-selected');
+          }
+
+          if (cellDate.getTime() === todayDate.getTime()) {
+            btn.classList.add('dp-today');
+          }
+
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            selectedDate = dateStr;
+            if (nativeDateInput) nativeDateInput.value = dateStr;
+            if (display) display.textContent = cellDate.toLocaleDateString('de-CH', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+            if (trigger) trigger.classList.add('has-value');
+            if (dropdown) dropdown.classList.remove('open');
+            renderCalendar();
+          });
+
+          daysContainer.appendChild(btn);
+        }
+
+        if (nextBtn) {
+          nextBtn.disabled = (viewYear === todayDate.getFullYear() && viewMonth >= todayDate.getMonth()) || viewYear > todayDate.getFullYear();
+        }
+      }
+
+      if (trigger && dropdown) {
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          dropdown.classList.toggle('open');
+        });
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          viewMonth--;
+          if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+          renderCalendar();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          viewMonth++;
+          if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+          renderCalendar();
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (datepicker && dropdown && e.target && !datepicker.contains(e.target as Node)) {
+          dropdown.classList.remove('open');
+        }
+      });
+
+      renderCalendar();
     }
 
     // 2. Star Text Display Logic

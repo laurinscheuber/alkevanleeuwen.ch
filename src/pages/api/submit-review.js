@@ -157,8 +157,10 @@ export async function POST({ request }) {
             <a href="https://physiotherapie-alkevanleeuwen.ch/studio/desk/testimonial;${studioDocId}" style="display: inline-block; background-color: #EB690B; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 16px;">Bewertung prüfen & veröffentlichen</a>
           </div>
           
-          <p style="text-align: center; margin-top: 15px; font-size: 13px; color: #888;">
-            (Klicke auf den Button, um den Eintrag im CMS zu öffnen. Aktiviere "Auf Startseite anzeigen", falls die Bewertung passend ist).
+          <p style="text-align: center; margin-top: 15px; font-size: 13px; color: #888; line-height: 1.5;">
+            Klicke auf den Button. Wenn die Bewertung in der Gesamtbewertung (Sterne-Schnitt) zählen soll, klicke oben rechts auf <strong>Publish / Veröffentlichen</strong>.<br><br>
+            Wenn der Bewertungstext auch effektiv auf der Website angezeigt werden soll, aktiviere vorher noch den Schalter <strong>Auf Startseite anzeigen</strong> und klicke dann auf Veröffentlichen.<br>
+            <em>(Empfehlung: max. 5-6 Texte auf der Startseite anzeigen.)</em>
           </p>
         </div>
 
